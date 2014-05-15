@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MediaLibrary Feeder\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Katsushi Kawamori <dodesyoswift312@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+
+msgid "Number of files to show to this page"
+msgstr ""
+
+msgid "Number of feeds of the latest to publish"
+msgstr ""
+
+msgid "Icon"
+msgstr ""
+
+msgid "Icon Url"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Permalink and Filetype"
+msgstr ""
+
+msgid "Feed Title"
+msgstr ""
+
+msgid "Feed Description"
+msgstr ""
+
+msgid "Registration of feed"
+msgstr ""
+
+msgid "Feed registered"
+msgstr ""
+
+msgid "Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it, choose a feed title."
+msgstr ""
+
+msgid "Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the title, put a check in the feed you want to use."
+msgstr ""
+
+msgid "Icon can be used include the following."
+msgstr ""

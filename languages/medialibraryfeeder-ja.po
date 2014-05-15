@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MediaLibrary Feeder\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Katsushi Kawamori <dodesyoswift312@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"X-Generator: Poedit 1.6.4\n"
+
+msgid "Number of files to show to this page"
+msgstr "このページへ表示するファイルの数"
+
+msgid "Number of feeds of the latest to publish"
+msgstr "公開する最新のフィードの数"
+
+msgid "Icon"
+msgstr "アイコン"
+
+msgid "Icon Url"
+msgstr "アイコンのUrl"
+
+msgid "File"
+msgstr "ファイル"
+
+msgid "Permalink and Filetype"
+msgstr "パーマリンクとファイルタイプ"
+
+msgid "Feed Title"
+msgstr "フィードのタイトル"
+
+msgid "Feed Description"
+msgstr "フィードの説明"
+
+msgid "Registration of feed"
+msgstr "フィードの登録"
+
+msgid "Feed registered"
+msgstr "登録されたフィード"
+
+msgid ""
+"Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do "
+"apply it, choose a feed title."
+msgstr ""
+"MediaLibrary　Feederのメタボックスが、[編集メディア]に追加されます。それを適"
+"用し、フィードのタイトルを選択してください。"
+
+msgid ""
+"Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the "
+"title, put a check in the feed you want to use."
+msgstr ""
+"MediaLibrary Feederのウィジェットが、[ウィジェット]に追加されます。タイトルを"
+"入力し、使いたいフィードにチェックを入れてください。"
+
+msgid "Icon can be used include the following."
+msgstr "以下のアイコンが標準で入っています。"
