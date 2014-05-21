@@ -30,13 +30,33 @@ class MediaLibraryFeederRegist {
 		$blog_title =  get_bloginfo ( 'name' );
 		$blog_description =  get_bloginfo ( 'description' );
 		$iconurl = MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/icon/rssfeeds.png';
+		$blogusers = get_users();
+		$copyright = $blogusers[0]->display_name;
+		$itunes_author = $copyright;
+		$itunes_name = $copyright;
+		$itunes_email = $blogusers[0]->user_email;
 		if ( !get_option('medialibraryfeeder_settings') ) {
 			$settings_tbl = array(
 							'pagemax' => 20,
 							$blog_title => array(
 										'description' => $blog_description,
 										'rssmax' => 10,
-										'iconurl' => $iconurl
+										'iconurl' => $iconurl,
+										'ttl' => 60,
+										'copyright' => $copyright,
+										'itunes_author' => $itunes_author,
+										'itunes_block' => 'no',
+										'itunes_category_1' => '',
+										'itunes_category_2' => '',
+										'itunes_category_3' => '',
+										'itunes_image' => '',
+										'itunes_explicit' => 'no',
+										'itunes_complete' => 'no',
+										'itunes_newfeedurl' => '',
+										'itunes_name' => $itunes_name,
+										'itunes_email' => $itunes_email,
+										'itunes_subtitle' => '',
+										'itunes_summary' => $blog_description
 									)
 							);
 			update_option( 'medialibraryfeeder_settings', $settings_tbl );

@@ -31,6 +31,9 @@ msgstr ""
 msgid "Feed Title"
 msgstr ""
 
+msgid "Feed URL"
+msgstr ""
+
 msgid "Feed Description"
 msgstr ""
 
@@ -40,7 +43,7 @@ msgstr ""
 msgid "Feed registered"
 msgstr ""
 
-msgid "Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it, choose a feed title."
+msgid "Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it. Choose a feed title. Input ituned option."
 msgstr ""
 
 msgid "Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the title, put a check in the feed you want to use."

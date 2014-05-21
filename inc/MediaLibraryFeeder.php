@@ -70,6 +70,10 @@ class MediaLibraryFeeder {
 					$link_url = NULL;
 					$filesize = NULL;
 					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
+					$blogusers = get_users($attachment->ID);
+					$author_name = $blogusers[0]->display_name;
+					$blog_name = get_bloginfo('name');
+					$length = NULL;
 					if ( $ext2type === 'image' ) {
 						$attachment_image_src = wp_get_attachment_image_src($attachment->ID, 'full');
 						$link_url = $attachment_image_src[0];
@@ -78,21 +82,44 @@ class MediaLibraryFeeder {
 						if ( $ext2type === 'audio' || $ext2type === 'video' ) {
 							$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
 							$filesize = $attachment_metadata['filesize'];
+							$length = $attachment_metadata['length_formatted'];
 						}
 					}
 					$img_url = '<a href="'.$link_url.'">'.$thumblink.'</a>';
 					$xmlitems[$feedtitle] .= "<item>\n";
 					$xmlitems[$feedtitle] .= "<title>".$title."</title>\n";
 					$xmlitems[$feedtitle] .= "<link>".$link_url."</link>\n";
-					if ( $ext2type === 'audio' || $ext2type === 'video' ){
-						$xmlitems[$feedtitle] .= '<enclosure url="'.$link_url.'" length="'.$filesize.'" type="'.$this->mime_type($ext).'" />'."\n";
-					}
 					if( !empty($thumblink) ) {
 						$xmlitems[$feedtitle] .= "<description><![CDATA[".$img_url."]]>".$attachment->post_content."</description>\n";
 					} else {
 						$xmlitems[$feedtitle] .= "<description>".$attachment->post_content."</description>\n";
 					}
+					if ( $ext === 'm4a' || $ext === 'mp3' || $ext === 'mov' || $ext === 'mp4' || $ext === 'm4v' || $ext === 'pdf' || $ext === 'epub' ) {
+						$itunes_author = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_author', true );
+						$itunes_subtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_subtitle', true );
+						$itunes_summary = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_summary', true );
+						$itunes_image = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_image', true );
+						$itunes_block = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_block', true );
+						$itunes_explicit = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_explicit', true );
+						$itunes_isClosedCaptioned = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_isClosedCaptioned', true );
+						$itunes_order = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_order', true );
+						if ( empty($itunes_author) ) { $itunes_author = $author_name; }
+						$xmlitems[$feedtitle] .= "<itunes:author>".$itunes_author."</itunes:author>\n";
+						if ( !empty($itunes_subtitle) ) { $xmlitems[$feedtitle] .= "<itunes:subtitle>".$itunes_subtitle."</itunes:subtitle>\n"; }
+						if ( !empty($itunes_summary) ) { $xmlitems[$feedtitle] .= "<itunes:summary>".$itunes_summary."</itunes:summary>\n"; }
+						if ( !empty($itunes_image) ) { $xmlitems[$feedtitle] .= '<itunes:image href="'.$itunes_image.'"'." />\n"; }
+						if ( !empty($itunes_block) ) { $xmlitems[$feedtitle] .= "<itunes:block>".$itunes_block."</itunes:block>\n"; }
+						if ( !empty($itunes_explicit) ) { $xmlitems[$feedtitle] .= "<itunes:explicit>".$itunes_explicit."</itunes:explicit>\n"; }
+						if ( !empty($itunes_isClosedCaptioned) ) { $xmlitems[$feedtitle] .= "<itunes:isClosedCaptioned>".$itunes_isClosedCaptioned."</itunes:isClosedCaptioned>\n"; }
+						if ( !empty($itunes_order) ) { $xmlitems[$feedtitle] .= "<itunes:order>".$itunes_order."</itunes:order>\n"; }
+						if ( !empty($length) ) { $xmlitems[$feedtitle] .= "<itunes:duration>".$length."</itunes:duration>\n"; }
+					}
+					$xmlitems[$feedtitle] .= "<guid>".$link_url."</guid>\n";
+					$xmlitems[$feedtitle] .= "<dc:creator>".$blog_name."</dc:creator>\n";
 					$xmlitems[$feedtitle] .= "<pubDate>".$stamptime."</pubDate>\n";
+					if ( $ext2type === 'audio' || $ext2type === 'video' ){
+						$xmlitems[$feedtitle] .= '<enclosure url="'.$link_url.'" length="'.$filesize.'" type="'.$this->mime_type($ext).'" />'."\n";
+					}
 					$xmlitems[$feedtitle] .= "</item>\n";
 					++$rsscount[$feedtitle];
 				}
@@ -123,16 +150,44 @@ class MediaLibraryFeeder {
 
 			$homeurl = home_url();
 			$feedlanguage = WPLANG;
+			$stamptime = mysql2date( DATE_RSS, time() );
+			$itunescategory = stripslashes($medialibraryfeeder_settings[$feedtitle][itunes_category_1]);
+			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle][itunes_category_2]);
+			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle][itunes_category_3]);
+			$itunescategory = str_replace( '&', '&amp;', $itunescategory );
+			if ( !empty($medialibraryfeeder_settings[$feedtitle][itunes_newfeedurl]) ) {
+				$itunesnewfeedurl = '<itunes:new-feed-url>'.$medialibraryfeeder_settings[$feedtitle][itunes_newfeedurl].'</itunes:new-feed-url>';
+			}
 
 //RSS Feed
 $xml_begin = <<<XMLBEGIN
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:content="http://purl.org/rss/1.0/modules/content/"
+ xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd"
+ version="2.0">
 <channel>
+<ttl>{$medialibraryfeeder_settings[$feedtitle][ttl]}</ttl>
 <title>{$feedtitle}</title>
 <link>{$homeurl}</link>
 <description>{$medialibraryfeeder_settings[$feedtitle][description]}</description>
 <language>$feedlanguage</language>
+<lastBuildDate>$stamptime</lastBuildDate>
+<copyright>{$medialibraryfeeder_settings[$feedtitle][copyright]}</copyright>
+<itunes:author>{$medialibraryfeeder_settings[$feedtitle][itunes_author]}</itunes:author>
+<itunes:block>{$medialibraryfeeder_settings[$feedtitle][itunes_block]}</itunes:block>
+{$itunescategory}
+<itunes:image href="{$medialibraryfeeder_settings[$feedtitle][itunes_image]}" />
+<itunes:explicit>{$medialibraryfeeder_settings[$feedtitle][itunes_explicit]}</itunes:explicit>
+<itunes:complete>{$medialibraryfeeder_settings[$feedtitle][itunes_complete]}</itunes:complete>
+{$itunesnewfeedurl}
+<itunes:owner>
+<itunes:name>{$medialibraryfeeder_settings[$feedtitle][itunes_name]}</itunes:name>
+<itunes:email>{$medialibraryfeeder_settings[$feedtitle][itunes_email]}</itunes:email>
+</itunes:owner>
+<itunes:subtitle>{$medialibraryfeeder_settings[$feedtitle][itunes_subtitle]}</itunes:subtitle>
+<itunes:summary>{$medialibraryfeeder_settings[$feedtitle][itunes_summary]}</itunes:summary>
 <generator>MediaLibrary Feeder</generator>
 
 XMLBEGIN;
@@ -143,7 +198,7 @@ $xml_end = <<<XMLEND
 XMLEND;
 			$xml = $xml_begin.$xmlitem.$xml_end;
 			if ( file_exists($xmlfile)){
-				if ( !strpos(file_get_contents($xmlfile), $xmlitem) ) {
+				if ( !strpos(file_get_contents($xmlfile), $xml) ) {
 					$fno = fopen($xmlfile, 'w');
 						fwrite($fno, $xml);
 					fclose($fno);

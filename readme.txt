@@ -4,11 +4,11 @@ Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
 Tags: archive, audio, feed, feeds, gallery, image, images, media, photo, photos, picture, pictures, podcast, rss, video
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 1.0
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Output as feed the media library.
+Output as feed the media library. Generate a podcast for iTunes Store.
 
 == Description ==
 
@@ -39,12 +39,17 @@ none
 3. `/assets/screenshot-3.png`
 4. `/assets/screenshot-4.png`
 5. `/assets/screenshot-5.png`
+6. `/assets/screenshot-6.png`
 
 == Changelog ==
+
+= 2.0 =
+Generate a podcast for iTunes Store.
 
 = 1.0 =
 
 == Upgrade Notice ==
 
+= 2.0 =
 = 1.0 =
 

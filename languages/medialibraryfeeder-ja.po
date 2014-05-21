@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: MediaLibrary Feeder\n"
+"Project-Id-Version: MedaiLibrary Feeder\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Katsushi Kawamori <dodesyoswift312@gmail.com>\n"
@@ -10,6 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja\n"
 "X-Generator: Poedit 1.6.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "Number of files to show to this page"
 msgstr "このページへ表示するファイルの数"
@@ -32,6 +33,9 @@ msgstr "パーマリンクとファイルタイプ"
 msgid "Feed Title"
 msgstr "フィードのタイトル"
 
+msgid "Feed URL"
+msgstr "フィードのURL"
+
 msgid "Feed Description"
 msgstr "フィードの説明"
 
@@ -43,10 +47,11 @@ msgstr "登録されたフィード"
 
 msgid ""
 "Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do "
-"apply it, choose a feed title."
+"apply it. Choose a feed title. Input ituned option."
 msgstr ""
 "MediaLibrary　Feederのメタボックスが、[編集メディア]に追加されます。それを適"
-"用し、フィードのタイトルを選択してください。"
+"用し、フィードのタイトルを選択してください。itunedオプションを入力してくださ"
+"い。"
 
 msgid ""
 "Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the "
@@ -57,3 +62,210 @@ msgstr ""
 
 msgid "Icon can be used include the following."
 msgstr "以下のアイコンが標準で入っています。"
+
+msgid "Stands for time to live. It is a number of minutes."
+msgstr "記事の寿命（キャッシュ可能時間）を指定。値は分で指定。"
+
+msgid "Arts"
+msgstr "アート"
+
+msgid "Arts - Design"
+msgstr "アート - デザイン"
+
+msgid "Arts - Fashion & Beauty"
+msgstr "アート - ファッション／美容"
+
+msgid "Arts - Food"
+msgstr "アート - フード"
+
+msgid "Arts - Literature"
+msgstr "アート - 文学"
+
+msgid "Arts - Performing Arts"
+msgstr "アート - パフォーマンスアート"
+
+msgid "Arts - Visual Arts"
+msgstr "アート - ビジュアルアート"
+
+msgid "Business"
+msgstr "ビジネス"
+
+msgid "Business - Business News"
+msgstr "ビジネス - ビジネスニュース"
+
+msgid "Business - Careers"
+msgstr "ビジネス - キャリア"
+
+msgid "Business - Investing"
+msgstr "ビジネス - 投資"
+
+msgid "Business - Management & Marketing"
+msgstr "ビジネス - 経営／マーケティング"
+
+msgid "Business - Shopping"
+msgstr "ビジネス - ショッピング"
+
+msgid "Comedy"
+msgstr "コメディ"
+
+msgid "Education"
+msgstr "教育"
+
+msgid "Education - Education"
+msgstr "教育 - 教育"
+
+msgid "Education - Education Technology"
+msgstr "教育 - 教育技術"
+
+msgid "Education - Higher Education"
+msgstr "教育 - 大学以上"
+
+msgid "Education - K-12"
+msgstr "教育 - 幼稚園?高校"
+
+msgid "Education - Language Courses"
+msgstr "教育 - 言語コース"
+
+msgid "Education - Training"
+msgstr "教育 - トレーニング"
+
+msgid "Games & Hobbies"
+msgstr "ゲーム／趣味"
+
+msgid "Games & Hobbies - Automotive"
+msgstr "ゲーム／趣味 - 自動車"
+
+msgid "Games & Hobbies - Aviation"
+msgstr "ゲーム／趣味 - 航空"
+
+msgid "Games & Hobbies - Hobbies"
+msgstr "ゲーム／趣味 - 趣味"
+
+msgid "Games & Hobbies - Other Games"
+msgstr "ゲーム／趣味 - その他のゲーム"
+
+msgid "Games & Hobbies - Video Games"
+msgstr "ゲーム／趣味 - ビデオゲーム"
+
+msgid "Government & Organizations"
+msgstr "行政／団体"
+
+msgid "Government & Organizations - Local"
+msgstr "行政／団体 - ローカル"
+
+msgid "Government & Organizations - National"
+msgstr "行政／団体 - 国"
+
+msgid "Government & Organizations - Non-Profit"
+msgstr "行政／団体 - 非営利"
+
+msgid "Government & Organizations - Regional"
+msgstr "行政／団体 - 地方自治体"
+
+msgid "Health"
+msgstr "健康"
+
+msgid "Health - Alternative Health"
+msgstr "健康 - 代替療法"
+
+msgid "Health - Fitness & Nutrition"
+msgstr "健康 - フィットネス／栄養"
+
+msgid "Health - Self-Help"
+msgstr "健康 - セルフヘルプ"
+
+msgid "Health - Sexuality"
+msgstr "健康 - セクシャリティ"
+
+msgid "Kids & Family"
+msgstr "キッズ／ファミリー"
+
+msgid "Music"
+msgstr "ミュージック"
+
+msgid "News & Politics"
+msgstr "ニュース／政治"
+
+msgid "Religion & Spirituality"
+msgstr "宗教／スピリチュアル"
+
+msgid "Religion & Spirituality - Buddhism"
+msgstr "宗教／スピリチュアル - 仏教"
+
+msgid "Religion & Spirituality - Christianity"
+msgstr "宗教／スピリチュアル - キリスト教"
+
+msgid "Religion & Spirituality - Hinduism"
+msgstr "宗教／スピリチュアル - ヒンズー教"
+
+msgid "Religion & Spirituality - Islam"
+msgstr "宗教／スピリチュアル - イスラム教"
+
+msgid "Religion & Spirituality - Judaism"
+msgstr "宗教／スピリチュアル - ユダヤ教"
+
+msgid "Religion & Spirituality - Other"
+msgstr "宗教／スピリチュアル - その他"
+
+msgid "Religion & Spirituality - Spirituality"
+msgstr "宗教／スピリチュアル - スピリチュアル"
+
+msgid "Science & Medicine"
+msgstr "科学／医学"
+
+msgid "Science & Medicine - Medicine"
+msgstr "科学／医学 - 医学"
+
+msgid "Science & Medicine - Natural Sciences"
+msgstr "科学／医学 - 自然科学"
+
+msgid "Science & Medicine - Social Sciences"
+msgstr "科学／医学 - 社会科学"
+
+msgid "Society & Culture"
+msgstr "社会／文化"
+
+msgid "Society & Culture - History"
+msgstr "社会／文化 - 歴史"
+
+msgid "Society & Culture - Personal Journals"
+msgstr "社会／文化 - 個人ジャーナル"
+
+msgid "Society & Culture - Philosophy"
+msgstr "社会／文化 - 哲学"
+
+msgid "Society & Culture - Places & Travel"
+msgstr "社会／文化 - 地域情報／トラベル"
+
+msgid "Sports & Recreation"
+msgstr "スポーツ／レクリエーション"
+
+msgid "Sports & Recreation - Amateur"
+msgstr "スポーツ／レクリエーション - アマチュア"
+
+msgid "Sports & Recreation - College & High School"
+msgstr "スポーツ／レクリエーション - 大学・高校"
+
+msgid "Sports & Recreation - Outdoor"
+msgstr "スポーツ／レクリエーション - アウトドア"
+
+msgid "Sports & Recreation - Professional"
+msgstr "スポーツ／レクリエーション - 職業"
+
+msgid "Technology"
+msgstr "テクノロジー"
+
+msgid "Technology - Gadgets"
+msgstr "テクノロジー - ガジェット"
+
+msgid "Technology - Tech News"
+msgstr "テクノロジー - Techニュース"
+
+msgid "Technology - Podcasting"
+msgstr "テクノロジー - ポッドキャスティング"
+
+msgid "Technology - Software How-To"
+msgstr "テクノロジー - ソフトウェア ハウトゥ"
+
+msgid "TV & Film"
+msgstr "テレビ番組／映画"

@@ -17,14 +17,28 @@
 			);
 	$allposts = get_posts($args);
 
+	$medialibraryfeeder_arr = array(
+								'medialibraryfeeder_apply',
+								'medialibraryfeeder_title',
+								'medialibraryfeeder_itunes_author',
+								'medialibraryfeeder_itunes_block',
+								'medialibraryfeeder_itunes_image',
+								'medialibraryfeeder_itunes_explicit',
+								'medialibraryfeeder_itunes_isClosedCaptioned',
+								'medialibraryfeeder_itunes_order',
+								'medialibraryfeeder_itunes_subtitle',
+								'medialibraryfeeder_itunes_summary'
+							);
+
 	// For Single site
 	if ( !is_multisite() ) {
 		foreach( $option_names as $option_name ) {
 		    delete_option( $option_name );
 		}
 		foreach( $allposts as $postinfo ) {
-			delete_post_meta( $postinfo->ID, 'medialibraryfeeder_apply' );
-			delete_post_meta( $postinfo->ID, 'medialibraryfeeder_title' );
+			foreach ( $medialibraryfeeder_arr as $key ) {
+				delete_post_meta( $postinfo->ID, $key );
+			}
 		}
 	} else {
 	// For Multisite
@@ -38,8 +52,9 @@
 			    delete_option( $option_name );
 			}
 			foreach( $allposts as $postinfo ) {
-				delete_post_meta( $postinfo->ID, 'medialibraryfeeder_apply' );
-				delete_post_meta( $postinfo->ID, 'medialibraryfeeder_title' );
+				foreach ( $medialibraryfeeder_arr as $key ) {
+					delete_post_meta( $postinfo->ID, $key );
+				}
 			}
 	    }
 	    switch_to_blog( $original_blog_id );
