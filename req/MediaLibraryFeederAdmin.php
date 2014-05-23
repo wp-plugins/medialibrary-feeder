@@ -736,22 +736,6 @@ class MediaLibraryFeederAdmin {
 
 		$delete_titles = $_POST['medialibraryfeeder_settings_delete_title'];
 
-		if ( !empty($medialibraryfeeder_applys) ) {
-			foreach ( $medialibraryfeeder_applys as $key => $value ) {
-				if ( $value === 'true' ) {
-			    	update_post_meta( $key, 'medialibraryfeeder_apply', $value );
-				}
-			}
-		}
-
-		if ( !empty($medialibraryfeeder_titles) ) {
-			foreach ( $medialibraryfeeder_titles as $key => $value ) {
-				if ( !empty($value) && get_post_meta( $key, 'medialibraryfeeder_apply', true  ) === 'true' ) {
-			    	update_post_meta( $key, 'medialibraryfeeder_title', $value );
-				}
-			}
-		}
-
 		// for delete post meta
 		$medialibraryfeeder_arr = array(
 									'medialibraryfeeder_apply',
@@ -765,6 +749,26 @@ class MediaLibraryFeederAdmin {
 									'medialibraryfeeder_itunes_subtitle',
 									'medialibraryfeeder_itunes_summary'
 								);
+
+		if ( !empty($medialibraryfeeder_applys) ) {
+			foreach ( $medialibraryfeeder_applys as $key => $value ) {
+				if ( $value === 'true' ) {
+			    	update_post_meta( $key, 'medialibraryfeeder_apply', $value );
+				} else {
+					foreach ( $medialibraryfeeder_arr as $medialibrary_meta ) {
+						delete_post_meta( $key, $medialibrary_meta );
+					}
+				}
+			}
+		}
+
+		if ( !empty($medialibraryfeeder_titles) ) {
+			foreach ( $medialibraryfeeder_titles as $key => $value ) {
+				if ( !empty($value) && get_post_meta( $key, 'medialibraryfeeder_apply', true  ) === 'true' ) {
+			    	update_post_meta( $key, 'medialibraryfeeder_title', $value );
+				}
+			}
+		}
 
 		$args = array(
 			'post_type' => 'attachment',
@@ -826,65 +830,68 @@ class MediaLibraryFeederAdmin {
 		}
 	    $form_fields["medialibraryfeeder_title"]["html"] .= "</select>\n";
 
-		// text
-		$blogusers = get_users($post->ID);
-		$author_name = $blogusers[0]->display_name;
-		$itunes_author = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_author', true );
-		if ( empty($itunes_author) ) { $itunes_author = $author_name; }
-	    $form_fields["medialibraryfeeder_itunes_author"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#authorId" target="_blank"><code>&lt;itunes:author&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_author"]["input"] = "text";
-		$form_fields["medialibraryfeeder_itunes_author"]["value"] = $itunes_author;
+		$ext = end(explode( '.', wp_get_attachment_url($post->ID) ));
+		if ( $ext === 'm4a' || $ext === 'mp3' || $ext === 'mov' || $ext === 'mp4' || $ext === 'm4v' || $ext === 'pdf' || $ext === 'epub' ) {
+			// text
+			$blogusers = get_users($post->ID);
+			$author_name = $blogusers[0]->display_name;
+			$itunes_author = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_author', true );
+			if ( empty($itunes_author) ) { $itunes_author = $author_name; }
+		    $form_fields["medialibraryfeeder_itunes_author"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#authorId" target="_blank"><code>&lt;itunes:author&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_author"]["input"] = "text";
+			$form_fields["medialibraryfeeder_itunes_author"]["value"] = $itunes_author;
 
-		// select
-		$itunes_block = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_block', true );
-		$form_fields["medialibraryfeeder_itunes_block"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#block" target="_blank"><code>&lt;itunes:block&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_block"]["input"] = "html";
-		$form_fields["medialibraryfeeder_itunes_block"]["html"]  = "<select name='attachments[{$post->ID}][medialibraryfeeder_itunes_block]' id='attachments[{$post->ID}][medialibraryfeeder_itunes_block]'>\n";
-		$form_fields["medialibraryfeeder_itunes_block"]["html"] .= ( $itunes_block == 'no' )? "<option value='no' selected>no</option>\n":"<option value='no'>no</option>\n";
-		$form_fields["medialibraryfeeder_itunes_block"]["html"] .= ( $itunes_block == 'yes' )? "<option value='yes' selected>yes</option>\n":"<option value='yes'>yes</option>\n";
-		$form_fields["medialibraryfeeder_itunes_block"]["html"] .= "</select>\n";
+			// select
+			$itunes_block = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_block', true );
+			$form_fields["medialibraryfeeder_itunes_block"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#block" target="_blank"><code>&lt;itunes:block&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_block"]["input"] = "html";
+			$form_fields["medialibraryfeeder_itunes_block"]["html"]  = "<select name='attachments[{$post->ID}][medialibraryfeeder_itunes_block]' id='attachments[{$post->ID}][medialibraryfeeder_itunes_block]'>\n";
+			$form_fields["medialibraryfeeder_itunes_block"]["html"] .= ( $itunes_block == 'no' )? "<option value='no' selected>no</option>\n":"<option value='no'>no</option>\n";
+			$form_fields["medialibraryfeeder_itunes_block"]["html"] .= ( $itunes_block == 'yes' )? "<option value='yes' selected>yes</option>\n":"<option value='yes'>yes</option>\n";
+			$form_fields["medialibraryfeeder_itunes_block"]["html"] .= "</select>\n";
 
-		// text
-	    $itunes_image = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_image', true );
-	    $form_fields["medialibraryfeeder_itunes_image"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#image" target="_blank"><code>&lt;itunes:image&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_image"]["input"] = "html";
-	    $form_fields["medialibraryfeeder_itunes_image"]["html"]  = "<input type='text' class='text' id='attachments-{$post->ID}-medialibraryfeeder_itunes_image' name='attachments[{$post->ID}][medialibraryfeeder_itunes_image]' value='$itunes_image' size='80' />\n";
+			// text
+		    $itunes_image = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_image', true );
+		    $form_fields["medialibraryfeeder_itunes_image"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#image" target="_blank"><code>&lt;itunes:image&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_image"]["input"] = "html";
+		    $form_fields["medialibraryfeeder_itunes_image"]["html"]  = "<input type='text' class='text' id='attachments-{$post->ID}-medialibraryfeeder_itunes_image' name='attachments[{$post->ID}][medialibraryfeeder_itunes_image]' value='$itunes_image' size='80' />\n";
 
-		// select
-		$itunes_explicit = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_explicit', true );
-		$form_fields["medialibraryfeeder_itunes_explicit"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#explicit" target="_blank"><code>&lt;itunes:explicit&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_explicit"]["input"] = "html";
-		$form_fields["medialibraryfeeder_itunes_explicit"]["html"]  = "<select name='attachments[{$post->ID}][medialibraryfeeder_itunes_explicit]' id='attachments[{$post->ID}][medialibraryfeeder_itunes_explicit]'>\n";
-		$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= ( $itunes_explicit == 'no' )? "<option value='no' selected>no</option>\n":"<option value='no'>no</option>\n";
-		$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= ( $itunes_explicit == 'yes' )? "<option value='yes' selected>yes</option>\n":"<option value='yes'>yes</option>\n";
-		$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= ( $itunes_explicit == 'clean' )? "<option value='clean' selected>clean</option>\n":"<option value='clean'>clean</option>\n";
-		$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= "</select>\n";
+			// select
+			$itunes_explicit = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_explicit', true );
+			$form_fields["medialibraryfeeder_itunes_explicit"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#explicit" target="_blank"><code>&lt;itunes:explicit&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_explicit"]["input"] = "html";
+			$form_fields["medialibraryfeeder_itunes_explicit"]["html"]  = "<select name='attachments[{$post->ID}][medialibraryfeeder_itunes_explicit]' id='attachments[{$post->ID}][medialibraryfeeder_itunes_explicit]'>\n";
+			$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= ( $itunes_explicit == 'no' )? "<option value='no' selected>no</option>\n":"<option value='no'>no</option>\n";
+			$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= ( $itunes_explicit == 'yes' )? "<option value='yes' selected>yes</option>\n":"<option value='yes'>yes</option>\n";
+			$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= ( $itunes_explicit == 'clean' )? "<option value='clean' selected>clean</option>\n":"<option value='clean'>clean</option>\n";
+			$form_fields["medialibraryfeeder_itunes_explicit"]["html"] .= "</select>\n";
 
-		// select
-		$itunes_isClosedCaptioned = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_isClosedCaptioned', true );
-		$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#isClosedCaptioned" target="_blank"><code>&lt;itunes:isClosedCaptioned&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["input"] = "html";
-		$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"]  = "<select name='attachments[{$post->ID}][medialibraryfeeder_itunes_isClosedCaptioned]' id='attachments[{$post->ID}][medialibraryfeeder_itunes_isClosedCaptioned]'>\n";
-		$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"] .= ( $itunes_isClosedCaptioned == 'no' )? "<option value='no' selected>no</option>\n":"<option value='no'>no</option>\n";
-		$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"] .= ( $itunes_isClosedCaptioned == 'yes' )? "<option value='yes' selected>yes</option>\n":"<option value='yes'>yes</option>\n";
-		$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"] .= "</select>\n";
+			// select
+			$itunes_isClosedCaptioned = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_isClosedCaptioned', true );
+			$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#isClosedCaptioned" target="_blank"><code>&lt;itunes:isClosedCaptioned&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["input"] = "html";
+			$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"]  = "<select name='attachments[{$post->ID}][medialibraryfeeder_itunes_isClosedCaptioned]' id='attachments[{$post->ID}][medialibraryfeeder_itunes_isClosedCaptioned]'>\n";
+			$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"] .= ( $itunes_isClosedCaptioned == 'no' )? "<option value='no' selected>no</option>\n":"<option value='no'>no</option>\n";
+			$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"] .= ( $itunes_isClosedCaptioned == 'yes' )? "<option value='yes' selected>yes</option>\n":"<option value='yes'>yes</option>\n";
+			$form_fields["medialibraryfeeder_itunes_isClosedCaptioned"]["html"] .= "</select>\n";
 
-		// text
-	    $form_fields["medialibraryfeeder_itunes_order"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#order" target="_blank"><code>&lt;itunes:order&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_order"]["input"] = "text";
-		$form_fields["medialibraryfeeder_itunes_order"]["value"] = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_order', true );
+			// text
+		    $form_fields["medialibraryfeeder_itunes_order"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#order" target="_blank"><code>&lt;itunes:order&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_order"]["input"] = "text";
+			$form_fields["medialibraryfeeder_itunes_order"]["value"] = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_order', true );
 
-		// text
-	    $itunes_subtitle = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_subtitle', true );
-	    $form_fields["medialibraryfeeder_itunes_subtitle"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#subtitle" target="_blank"><code>&lt;itunes:subtitle&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_subtitle"]["input"] = "html";
-	    $form_fields["medialibraryfeeder_itunes_subtitle"]["html"]  = "<input type='text' class='text' id='attachments-{$post->ID}-medialibraryfeeder_itunes_subtitle' name='attachments[{$post->ID}][medialibraryfeeder_itunes_subtitle]' value='$itunes_subtitle' size='80' />\n";
+			// text
+		    $itunes_subtitle = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_subtitle', true );
+		    $form_fields["medialibraryfeeder_itunes_subtitle"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#subtitle" target="_blank"><code>&lt;itunes:subtitle&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_subtitle"]["input"] = "html";
+		    $form_fields["medialibraryfeeder_itunes_subtitle"]["html"]  = "<input type='text' class='text' id='attachments-{$post->ID}-medialibraryfeeder_itunes_subtitle' name='attachments[{$post->ID}][medialibraryfeeder_itunes_subtitle]' value='$itunes_subtitle' size='80' />\n";
 
-		// textarea
-		$itunes_summary = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_summary', true );
-		$form_fields["medialibraryfeeder_itunes_summary"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#summary" target="_blank"><code>&lt;itunes:summary&gt;</code></a></div>';
-		$form_fields["medialibraryfeeder_itunes_summary"]["input"] = "html";
-		$form_fields["medialibraryfeeder_itunes_summary"]["html"] = "<textarea id='attachments-{$post->ID}-medialibraryfeeder_itunes_summary' name='attachments[{$post->ID}][medialibraryfeeder_itunes_summary]' rows='4' cols='80'>$itunes_summary</textarea>\n";
+			// textarea
+			$itunes_summary = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_summary', true );
+			$form_fields["medialibraryfeeder_itunes_summary"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#summary" target="_blank"><code>&lt;itunes:summary&gt;</code></a></div>';
+			$form_fields["medialibraryfeeder_itunes_summary"]["input"] = "html";
+			$form_fields["medialibraryfeeder_itunes_summary"]["html"] = "<textarea id='attachments-{$post->ID}-medialibraryfeeder_itunes_summary' name='attachments[{$post->ID}][medialibraryfeeder_itunes_summary]' rows='4' cols='80'>$itunes_summary</textarea>\n";
+		}
 
 	    return $form_fields;
 
@@ -910,7 +917,11 @@ class MediaLibraryFeederAdmin {
 								);
 		foreach ( $medialibraryfeeder_arr as $key ) {
 			if( isset( $attachment[$key] ) ) {
-		    	update_post_meta( $post['ID'], $key, $attachment[$key] );
+				if ( $attachment[medialibraryfeeder_apply] === 'true' ) {
+		    		update_post_meta( $post['ID'], $key, $attachment[$key] );
+				} else {
+					delete_post_meta( $post['ID'], $key );
+				}
 			} else {
 				delete_post_meta( $post['ID'], $key );
 			}

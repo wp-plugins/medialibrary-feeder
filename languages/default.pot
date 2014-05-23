@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: MediaLibrary Feeder\n"
+"Project-Id-Version: MedaiLibrary Feeder\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Katsushi Kawamori <dodesyoswift312@gmail.com>\n"
@@ -9,6 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.6.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "Number of files to show to this page"
 msgstr ""
@@ -43,11 +44,222 @@ msgstr ""
 msgid "Feed registered"
 msgstr ""
 
-msgid "Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it. Choose a feed title. Input ituned option."
+msgid ""
+"Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do "
+"apply it. Choose a feed title. Input ituned option."
 msgstr ""
 
-msgid "Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the title, put a check in the feed you want to use."
+msgid ""
+"Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the "
+"title, put a check in the feed you want to use."
 msgstr ""
 
 msgid "Icon can be used include the following."
+msgstr ""
+
+msgid "Stands for time to live. It is a number of minutes."
+msgstr ""
+
+msgid "Arts"
+msgstr ""
+
+msgid "Arts - Design"
+msgstr ""
+
+msgid "Arts - Fashion & Beauty"
+msgstr ""
+
+msgid "Arts - Food"
+msgstr ""
+
+msgid "Arts - Literature"
+msgstr ""
+
+msgid "Arts - Performing Arts"
+msgstr ""
+
+msgid "Arts - Visual Arts"
+msgstr ""
+
+msgid "Business"
+msgstr ""
+
+msgid "Business - Business News"
+msgstr ""
+
+msgid "Business - Careers"
+msgstr ""
+
+msgid "Business - Investing"
+msgstr ""
+
+msgid "Business - Management & Marketing"
+msgstr ""
+
+msgid "Business - Shopping"
+msgstr ""
+
+msgid "Comedy"
+msgstr ""
+
+msgid "Education"
+msgstr ""
+
+msgid "Education - Education"
+msgstr ""
+
+msgid "Education - Education Technology"
+msgstr ""
+
+msgid "Education - Higher Education"
+msgstr ""
+
+msgid "Education - K-12"
+msgstr ""
+
+msgid "Education - Language Courses"
+msgstr ""
+
+msgid "Education - Training"
+msgstr ""
+
+msgid "Games & Hobbies"
+msgstr ""
+
+msgid "Games & Hobbies - Automotive"
+msgstr ""
+
+msgid "Games & Hobbies - Aviation"
+msgstr ""
+
+msgid "Games & Hobbies - Hobbies"
+msgstr ""
+
+msgid "Games & Hobbies - Other Games"
+msgstr ""
+
+msgid "Games & Hobbies - Video Games"
+msgstr ""
+
+msgid "Government & Organizations"
+msgstr ""
+
+msgid "Government & Organizations - Local"
+msgstr ""
+
+msgid "Government & Organizations - National"
+msgstr ""
+
+msgid "Government & Organizations - Non-Profit"
+msgstr ""
+
+msgid "Government & Organizations - Regional"
+msgstr ""
+
+msgid "Health"
+msgstr ""
+
+msgid "Health - Alternative Health"
+msgstr ""
+
+msgid "Health - Fitness & Nutrition"
+msgstr ""
+
+msgid "Health - Self-Help"
+msgstr ""
+
+msgid "Health - Sexuality"
+msgstr ""
+
+msgid "Kids & Family"
+msgstr ""
+
+msgid "Music"
+msgstr ""
+
+msgid "News & Politics"
+msgstr ""
+
+msgid "Religion & Spirituality"
+msgstr ""
+
+msgid "Religion & Spirituality - Buddhism"
+msgstr ""
+
+msgid "Religion & Spirituality - Christianity"
+msgstr ""
+
+msgid "Religion & Spirituality - Hinduism"
+msgstr ""
+
+msgid "Religion & Spirituality - Islam"
+msgstr ""
+
+msgid "Religion & Spirituality - Judaism"
+msgstr ""
+
+msgid "Religion & Spirituality - Other"
+msgstr ""
+
+msgid "Religion & Spirituality - Spirituality"
+msgstr ""
+
+msgid "Science & Medicine"
+msgstr ""
+
+msgid "Science & Medicine - Medicine"
+msgstr ""
+
+msgid "Science & Medicine - Natural Sciences"
+msgstr ""
+
+msgid "Science & Medicine - Social Sciences"
+msgstr ""
+
+msgid "Society & Culture"
+msgstr ""
+
+msgid "Society & Culture - History"
+msgstr ""
+
+msgid "Society & Culture - Personal Journals"
+msgstr ""
+
+msgid "Society & Culture - Philosophy"
+msgstr ""
+
+msgid "Society & Culture - Places & Travel"
+msgstr ""
+
+msgid "Sports & Recreation"
+msgstr ""
+
+msgid "Sports & Recreation - Amateur"
+msgstr ""
+
+msgid "Sports & Recreation - College & High School"
+msgstr ""
+
+msgid "Sports & Recreation - Outdoor"
+msgstr ""
+
+msgid "Sports & Recreation - Professional"
+msgstr ""
+
+msgid "Technology"
+msgstr ""
+
+msgid "Technology - Gadgets"
+msgstr ""
+
+msgid "Technology - Tech News"
+msgstr ""
+
+msgid "Technology - Podcasting"
+msgstr ""
+
+msgid "Technology - Software How-To"
+msgstr ""
+
+msgid "TV & Film"
 msgstr ""

@@ -1,10 +1,10 @@
 === MediaLibrary Feeder ===
 Contributors: Katsushi Kawamori
 Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
-Tags: archive, audio, feed, feeds, gallery, image, images, media, photo, photos, picture, pictures, podcast, rss, video
+Tags: archive, audio, enclosure, feed, feeds, gallery, image, images, iphone, iTunes, m4v, mp3, MP4, media, music, photo, photos, picture, pictures, podcast, podcaster, podcasting, rss, rss2, video
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +43,11 @@ none
 
 == Changelog ==
 
+= 2.1 =
+Fixed problem of save of post_meta_data.
+In the Edit Media view a custom meta box for iTunes in the case of only the file format that iTunes supports.
+Change /languages.
+
 = 2.0 =
 Generate a podcast for iTunes Store.
 
@@ -50,6 +55,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.1 =
 = 2.0 =
 = 1.0 =
 
