@@ -68,7 +68,7 @@ class MediaLibraryFeeder {
 					$ext2type = wp_ext2type($ext);
 					$thumblink = NULL;
 					$link_url = NULL;
-					$filesize = NULL;
+					$file_size = NULL;
 					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
 					$blogusers = get_users($attachment->ID);
 					$author_name = $blogusers[0]->display_name;
@@ -81,7 +81,7 @@ class MediaLibraryFeeder {
 						$link_url = $attachment->guid;
 						if ( $ext2type === 'audio' || $ext2type === 'video' ) {
 							$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
-							$filesize = $attachment_metadata['filesize'];
+							$file_size = $attachment_metadata['filesize'];
 							$length = $attachment_metadata['length_formatted'];
 						}
 					}
@@ -118,7 +118,7 @@ class MediaLibraryFeeder {
 					$xmlitems[$feedtitle] .= "<dc:creator>".$blog_name."</dc:creator>\n";
 					$xmlitems[$feedtitle] .= "<pubDate>".$stamptime."</pubDate>\n";
 					if ( $ext2type === 'audio' || $ext2type === 'video' ){
-						$xmlitems[$feedtitle] .= '<enclosure url="'.$link_url.'" length="'.$filesize.'" type="'.$this->mime_type($ext).'" />'."\n";
+						$xmlitems[$feedtitle] .= '<enclosure url="'.$link_url.'" length="'.$file_size.'" type="'.$this->mime_type($ext).'" />'."\n";
 					}
 					$xmlitems[$feedtitle] .= "</item>\n";
 					++$rsscount[$feedtitle];
@@ -275,6 +275,70 @@ XMLEND;
 		}
 
 		return $mimetype;
+
+	}
+
+	/* ==================================================
+	 * @param	string	$atts
+	 * @return	string	$html
+	 * @since	2.2
+	 */
+	function feed_shortcode_func( $atts, $html = NULL ) {
+
+		extract(shortcode_atts(array(
+    	    'feed' => ''
+		), $atts));
+
+		$args = array(
+			'post_type' => 'attachment',
+			'numberposts' => -1,
+			'orderby' => 'date',
+			'order' => 'DESC',
+			'post_status' => null,
+			'post_parent' => $post->ID
+			); 
+
+		$attachments = get_posts($args);
+
+		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
+
+		$html = '<h2>'.$feed.'</h2>';
+		$html .= '<div id="playlists-medialibraryfeeder">';
+
+		if ($attachments) {
+			foreach ( $attachments as $attachment ) {
+			    $feedtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_title', true);
+				$rssmax = $medialibraryfeeder_settings[$feedtitle][rssmax];
+				if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $rssmax > $rsscount[$feedtitle] && $feed === $feedtitle ) {
+					$title = $attachment->post_title;
+					$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
+					$ext = end(explode('.', $attachment->guid));
+					$ext2type = wp_ext2type($ext);
+					$thumblink = NULL;
+					$link_url = NULL;
+					$file_size = NULL;
+					$length = NULL;
+					$stamptime = $attachment->post_date;
+					$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
+					if ( isset( $attachment_metadata['filesize'] ) ) {
+						$file_size = $attachment_metadata['filesize'];
+					} else {
+						$file_size = filesize( get_attached_file($attachment->ID) );
+					}
+					$metadata = '<div>'.$stamptime.'&nbsp;&nbsp;'.size_format($file_size);
+					if ( $ext2type === 'audio' || $ext2type === 'video' ) {
+						$length = $attachment_metadata['length_formatted'];
+						$metadata .= '&nbsp;&nbsp;'.$length;
+					}
+					$metadata .= '</div>';
+					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
+					$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', 'true', 'false' , $thumblink.$title.$metadata ).'</li>';
+				}
+			}
+		}
+		$html .= '</div><br clear="all">';
+
+		return $html;
 
 	}
 

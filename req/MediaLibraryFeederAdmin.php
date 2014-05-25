@@ -55,10 +55,10 @@ class MediaLibraryFeederAdmin {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-		wp_enqueue_style( 'jquery-ui-tabs', MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/css/jquery-ui.css' );
+		wp_enqueue_style( 'jquery-ui-tabs', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/jquery-ui.css' );
 		wp_enqueue_script( 'jquery-ui-tabs' );
-		wp_enqueue_script( 'jquery-ui-tabs-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/js/jquery-ui-tabs-in.js' );
-		wp_enqueue_script( 'jquery-check-selectall-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/js/jquery-check-selectall-in.js' );
+		wp_enqueue_script( 'jquery-ui-tabs-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery-ui-tabs-in.js' );
+		wp_enqueue_script( 'jquery-check-selectall-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery-check-selectall-in.js' );
 
 		if( !empty($_POST) ) { 
 			$this->options_updated();
@@ -81,9 +81,10 @@ class MediaLibraryFeederAdmin {
 		<li><a href="#tabs-2"><?php _e('Registration of feed', 'medialibraryfeeder'); ?></a></li>
 	    <li><a href="#tabs-3"><?php _e('Advanced')._e('Settings'); ?></a></li>
 	    <li><a href="#tabs-4"><?php _e('Caution:'); ?></a></li>
+		<li><a href="#tabs-5"><?php _e('Shortcode',  'medialibraryfeeder'); ?></a></li>
 
 	<!--
-		<li><a href="#tabs-5">FAQ</a></li>
+		<li><a href="#tabs-6">FAQ</a></li>
 	 -->
 	  </ul>
 
@@ -549,19 +550,31 @@ class MediaLibraryFeederAdmin {
 		<div class="wrap">
 			<h2><?php _e('Caution:') ?></h2>
 			<li><h3><?php _e('Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it. Choose a feed title. Input ituned option.', 'medialibraryfeeder'); ?></h3></li>
-			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/images/editmedia.png'; ?>">
+			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/editmedia.png'; ?>">
 			<li><h3><?php _e('Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the title, put a check in the feed you want to use.', 'medialibraryfeeder'); ?></h3></li>
-			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/images/widget.png'; ?>">
+			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/widget.png'; ?>">
 			<li><h3><?php _e('Icon can be used include the following.', 'medialibraryfeeder'); ?></h3></li>
-			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/icon/rssfeeds.png'; ?>"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/icon/rssfeeds.png'; ?>" size="100" /></div>
-			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/icon/podcast.png'; ?>"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/icon/podcast.png'; ?>" size="100" /></div>
+			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" size="100" /></div>
+			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" size="100" /></div>
+		</div>
+	  </div>
+
+	  <div id="tabs-5">
+		<div class="wrap">
+			<h2><?php _e('Shortcode',  'medialibraryfeeder'); ?></h2>
+			<li><h3><?php _e('MediaLibrary Feeder is available to display feed to [Post] or [Page] by shortcode. Use as follows.', 'medialibraryfeeder'); ?></h3></li>
+			<ul><code>[mlfeed feed=&#39;<font color="red"><?php _e('Feed Title', 'medialibraryfeeder'); ?></font>&#39;]</code></ul>
+
+			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag2.png'; ?>">
+			<li><h3><?php _e('Quick Tag of MediaLibrary Feeder will be added to ([Add New Post][Edit Post][Add New Page][Edit Page]). Please use it. Shortcode will be added.', 'medialibraryfeeder'); ?></h3></li>
+			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag1.png'; ?>">
 		</div>
 	  </div>
 
 	<!--
-	  <div id="tabs-5">
+	  <div id="tabs-6">
 		<div class="wrap">
-		<h2>FAQ</h2>
+			<h2>FAQ</h2>
 
 		</div>
 	  </div>

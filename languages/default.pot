@@ -60,6 +60,19 @@ msgstr ""
 msgid "Stands for time to live. It is a number of minutes."
 msgstr ""
 
+msgid "Shortcode"
+msgstr ""
+
+msgid ""
+"Quick Tag of MediaLibrary Feeder will be added to ([Add New Post][Edit Post]"
+"[Add New Page][Edit Page]). Please use it. Shortcode will be added."
+msgstr ""
+
+msgid ""
+"MediaLibrary Feeder is available to display feed to [Post] or [Page] by "
+"shortcode. Use as follows."
+msgstr ""
+
 msgid "Arts"
 msgstr ""
 

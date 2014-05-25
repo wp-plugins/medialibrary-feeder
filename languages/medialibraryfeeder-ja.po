@@ -66,6 +66,24 @@ msgstr "以下のアイコンが標準で入っています。"
 msgid "Stands for time to live. It is a number of minutes."
 msgstr "記事の寿命（キャッシュ可能時間）を指定。値は分で指定。"
 
+msgid "Shortcode"
+msgstr "ショートコード"
+
+msgid ""
+"Quick Tag of MediaLibrary Feeder will be added to ([Add New Post][Edit Post]"
+"[Add New Page][Edit Page]). Please use it. Shortcode will be added."
+msgstr ""
+"MediaLibrary Feeder のクイックタグは、（[新規投稿を追加] [投稿の編集] [新規固"
+"定ページを追加]、[固定ページを編集]）に追加されます。ご利用ください。ショート"
+"コードが追加されます。"
+
+msgid ""
+"MediaLibrary Feeder is available to display feed to [Post] or [Page] by "
+"shortcode. Use as follows."
+msgstr ""
+"MediaLibraryフィーダーはショートコードで[投稿]または[固定ページ]にフィードを"
+"表示することができます。以下のように使用してください。"
+
 msgid "Arts"
 msgstr "アート"
 

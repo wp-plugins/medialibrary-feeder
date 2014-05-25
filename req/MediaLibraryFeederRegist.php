@@ -29,7 +29,7 @@ class MediaLibraryFeederRegist {
 
 		$blog_title =  get_bloginfo ( 'name' );
 		$blog_description =  get_bloginfo ( 'description' );
-		$iconurl = MEDIALIBRARYFEEDER_PLUGIN_URL.'/medialibrary-feeder/icon/rssfeeds.png';
+		$iconurl = MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png';
 		$blogusers = get_users();
 		$copyright = $blogusers[0]->display_name;
 		$itunes_author = $copyright;

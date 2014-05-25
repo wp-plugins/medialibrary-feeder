@@ -1,10 +1,10 @@
 === MediaLibrary Feeder ===
 Contributors: Katsushi Kawamori
 Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
-Tags: archive, audio, enclosure, feed, feeds, gallery, image, images, iphone, iTunes, m4v, mp3, MP4, media, music, photo, photos, picture, pictures, podcast, podcaster, podcasting, rss, rss2, video
+Tags: audio, enclosure, feed, gallery, image, images, iTunes, m4v, mp3, MP4, media, music, podcast, rss, rss2, video
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 2.1
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,7 @@ Output as feed the media library. Generate a podcast for iTunes Store.
 
 *   Feeds of the audios and videos has been distributed as podcasts.
 
+*   Display to [Page] or [Post] from feed.
 
 *   Japanese (ja) - [Katsushi Kawamori](http://gallerylink.nyanko.org/medialink/medialibrary-feeder/)
 
@@ -40,8 +41,16 @@ none
 4. `/assets/screenshot-4.png`
 5. `/assets/screenshot-5.png`
 6. `/assets/screenshot-6.png`
+7. `/assets/screenshot-7.png`
+8. `/assets/screenshot-8.png`
+9. `/assets/screenshot-9.png`
 
 == Changelog ==
+
+= 2.2 =
+Add shortcode for display to [Page] or [Post] from feed.
+Add quicktag for shortcode.
+Change /languages.
 
 = 2.1 =
 Fixed problem of save of post_meta_data.

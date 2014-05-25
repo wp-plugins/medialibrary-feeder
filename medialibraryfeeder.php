@@ -2,7 +2,7 @@
 /*
 Plugin Name: MediaLibrary Feeder
 Plugin URI: http://wordpress.org/plugins/medialibrary-feeder/
-Version: 2.1
+Version: 2.2
 Description: Output as feed the media library. Generate a podcast for iTunes Store.
 Author: Katsushi Kawamori
 Author URI: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
@@ -28,16 +28,17 @@ Domain Path: /languages
 
 	define("MEDIALIBRARYFEEDER_PLUGIN_BASE_FILE", plugin_basename(__FILE__));
 	define("MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR", dirname(__FILE__));
-	define("MEDIALIBRARYFEEDER_PLUGIN_URL", plugins_url($path='',$scheme=null));
+	define("MEDIALIBRARYFEEDER_PLUGIN_URL", plugins_url($path='',$scheme=null).'/medialibrary-feeder');
 
-	require_once( dirname( __FILE__ ) . '/req/MediaLibraryFeederRegist.php' );
+	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederRegist.php' );
 	$medialibraryfeederregist = new MediaLibraryFeederRegist();
 	add_action('admin_init', array($medialibraryfeederregist, 'register_settings'));
 	unset($medialibraryfeederregist);
 
 	add_action('wp_head', wp_enqueue_script('jquery'));
+	add_action('wp_head', wp_enqueue_style('medialibrary-feeder', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/medialibrary-feeder.css'));
 
-	require_once( dirname( __FILE__ ) . '/req/MediaLibraryFeederAdmin.php' );
+	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederAdmin.php' );
 	$medialibraryfeederadmin = new MediaLibraryFeederAdmin();
 	add_action('admin_menu', array($medialibraryfeederadmin, 'plugin_menu'));
 	add_filter('attachment_fields_to_edit', array($medialibraryfeederadmin, 'add_attachment_medialibraryfeeder_field'), 10, 2 );
@@ -51,9 +52,16 @@ Domain Path: /languages
 	$medialibraryfeeder = new MediaLibraryFeeder();
 	$medialibraryfeeder->generate_feed();
 	add_action( 'wp_head',  array($medialibraryfeeder, 'add_feedlink') );
+	add_shortcode( 'mlfeed', array($medialibraryfeeder, 'feed_shortcode_func') );
 	unset($medialibraryfeeder);
 
-	require_once( dirname( __FILE__ ) . '/req/MediaLibraryFeederWidgetItem.php' );
+	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederWidgetItem.php' );
 	add_action('widgets_init', create_function('', 'return register_widget("MediaLibraryFeederWidgetItem");'));
+
+	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederQuickTag.php' );
+	$medialibraryfeederquicktag = new MediaLibraryFeederQuickTag();
+	add_action('media_buttons', array($medialibraryfeederquicktag, 'add_quicktag_select'));
+	add_action('admin_print_footer_scripts', array($medialibraryfeederquicktag, 'add_quicktag_button_js'));
+	unset($medialibraryfeederquicktag);
 
 ?>
