@@ -1,10 +1,10 @@
 === MediaLibrary Feeder ===
 Contributors: Katsushi Kawamori
 Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
-Tags: audio, enclosure, feed, gallery, image, images, iTunes, m4v, mp3, MP4, media, music, podcast, rss, rss2, video
+Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 2.2
+Stable tag: 2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ none
 
 == Changelog ==
 
+= 2.3 =
+Fixed problem of uninstall.
+
 = 2.2 =
 Add shortcode for display to [Page] or [Post] from feed.
 Add quicktag for shortcode.
@@ -64,6 +67,8 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.3 =
+= 2.2 =
 = 2.1 =
 = 2.0 =
 = 1.0 =

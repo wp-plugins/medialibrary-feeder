@@ -4,6 +4,17 @@
 	if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
 	    exit();
 
+	// Delete feeds
+	$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
+	$wp_uploads = wp_upload_dir();
+	$wp_upload_path = $wp_uploads['basedir'];
+	foreach ( $xmlitems as $feedtitle => $xmlitem ) {
+		$xmlfile = $wp_upload_path.'/'.md5($feedtitle).'.xml';
+		if ( file_exists($xmlfile)){
+			unlink($xmlfile);
+		}
+	}
+
 	$option_names = array(
 						'medialibraryfeeder_settings',
 						'medialibraryfeeder_feedwidget'
