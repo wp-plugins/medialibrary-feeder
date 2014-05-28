@@ -4,7 +4,7 @@ Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 2.3
+Stable tag: 2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,17 +35,20 @@ none
 
 == Screenshots ==
 
-1. `/assets/screenshot-1.png`
-2. `/assets/screenshot-2.png`
-3. `/assets/screenshot-3.png`
-4. `/assets/screenshot-4.png`
-5. `/assets/screenshot-5.png`
-6. `/assets/screenshot-6.png`
-7. `/assets/screenshot-7.png`
-8. `/assets/screenshot-8.png`
-9. `/assets/screenshot-9.png`
+1. Registration of feed
+2. Settings
+3. AdvancedSettings for iTunes store
+4. Edit Media
+5. Widgets Settings
+6. Widgets feed icon
+7. How to write short code
+8. How to write short code
+9. Appearance of the short code
 
 == Changelog ==
+
+= 2.4 =
+Fixed the problem of link attachment.
 
 = 2.3 =
 Fixed problem of uninstall.
@@ -67,6 +70,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.4 =
 = 2.3 =
 = 2.2 =
 = 2.1 =

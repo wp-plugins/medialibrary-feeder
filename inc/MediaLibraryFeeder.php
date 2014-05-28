@@ -332,7 +332,7 @@ XMLEND;
 					}
 					$metadata .= '</div>';
 					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
-					$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', 'true', 'false' , $thumblink.$title.$metadata ).'</li>';
+					$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', TRUE, FALSE , $thumblink.$title.$metadata ).'</li>';
 				}
 			}
 		}
