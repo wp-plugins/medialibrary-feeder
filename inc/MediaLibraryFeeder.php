@@ -285,9 +285,15 @@ XMLEND;
 	 */
 	function feed_shortcode_func( $atts, $html = NULL ) {
 
+		$html = apply_filters( 'post_medialibraryfeed', '', $atts );
+
 		extract(shortcode_atts(array(
-    	    'feed' => ''
+    	    'feed' => '',
+			'link' => ''
 		), $atts));
+
+		$permalink = TRUE;
+		if ( $link === 'file' ) { $permalink = FALSE; }
 
 		$args = array(
 			'post_type' => 'attachment',
@@ -332,7 +338,7 @@ XMLEND;
 					}
 					$metadata .= '</div>';
 					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
-					$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', TRUE, FALSE , $thumblink.$title.$metadata ).'</li>';
+					$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', $permalink, FALSE , $thumblink.$title.$metadata ).'</li>';
 				}
 			}
 		}

@@ -84,6 +84,18 @@ msgstr ""
 "MediaLibraryフィーダーはショートコードで[投稿]または[固定ページ]にフィードを"
 "表示することができます。以下のように使用してください。"
 
+msgid ""
+"If specify the &quot;file&quot;, it is linked to each file. The initial "
+"value is a link to the permalink of the media."
+msgstr ""
+"&quot;file&quot;を指定すると、各ファイルにリンクします。初期値は、メディアの"
+"パーマリンクへのリンクです。"
+
+msgid ""
+"In the case of an image, the feed can be cooperation with the following "
+"plugins."
+msgstr "画像の場合は、以下のプラグインとの連携が可能です。"
+
 msgid "Arts"
 msgstr "アート"
 

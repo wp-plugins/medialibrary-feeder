@@ -563,11 +563,19 @@ class MediaLibraryFeederAdmin {
 		<div class="wrap">
 			<h2><?php _e('Shortcode',  'medialibraryfeeder'); ?></h2>
 			<li><h3><?php _e('MediaLibrary Feeder is available to display feed to [Post] or [Page] by shortcode. Use as follows.', 'medialibraryfeeder'); ?></h3></li>
-			<ul><code>[mlfeed feed=&#39;<font color="red"><?php _e('Feed Title', 'medialibraryfeeder'); ?></font>&#39;]</code></ul>
-
+			<p>
+			<div style="text-indent:2em; font-weight:bold;">Optinos</div>
+			<div style="text-indent:4em"><code>[mlfeed feed=&#39;<font color="red">feed</font>&#39; link=&#39;<font color="red">file</font>&#39;]</code></div>
+			<li style="text-indent:4em; font-weight:bold;">feed</li>
+			<div style="text-indent:6em"><?php _e('Feed Title', 'medialibraryfeeder'); ?></div>
+			<li style="text-indent:4em; font-weight:bold;">link</li>
+			<div style="text-indent:6em"><?php _e('If specify the &quot;file&quot;, it is linked to each file. The initial value is a link to the permalink of the media.', 'medialibraryfeeder'); ?></div>
+			</p>
 			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag2.png'; ?>">
 			<li><h3><?php _e('Quick Tag of MediaLibrary Feeder will be added to ([Add New Post][Edit Post][Add New Page][Edit Page]). Please use it. Shortcode will be added.', 'medialibraryfeeder'); ?></h3></li>
 			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag1.png'; ?>">
+			<li><h3><?php _e('In the case of an image, the feed can be cooperation with the following plugins.', 'medialibraryfeeder'); ?></h3></li>
+			<li style="text-indent:2em; font-weight:bold;"><a href="http://wordpress.org/plugins/boxers-and-swipers/" target="_blank">Boxers and Swipers</a></li>
 		</div>
 	  </div>
 

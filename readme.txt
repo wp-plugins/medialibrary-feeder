@@ -4,7 +4,7 @@ Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 2.4
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ Output as feed the media library. Generate a podcast for iTunes Store.
 
 *   Feeds of the audios and videos has been distributed as podcasts.
 
-*   Display to [Page] or [Post] from feed.
+*   Display to [Page] or [Post] from feed. Can be cooperation with [Boxers and Swipers](http://wordpress.org/plugins/boxers-and-swipers/).
 
 *   Japanese (ja) - [Katsushi Kawamori](http://gallerylink.nyanko.org/medialink/medialibrary-feeder/)
 
@@ -47,6 +47,10 @@ none
 
 == Changelog ==
 
+= 2.5 =
+Add shortcode option.
+Can be cooperation with Boxers and Swipers.
+
 = 2.4 =
 Fixed the problem of link attachment.
 
@@ -70,6 +74,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.5 =
 = 2.4 =
 = 2.3 =
 = 2.2 =

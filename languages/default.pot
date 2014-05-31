@@ -73,6 +73,16 @@ msgid ""
 "shortcode. Use as follows."
 msgstr ""
 
+msgid ""
+"If specify the &quot;file&quot;, it is linked to each file. The initial "
+"value is a link to the permalink of the media."
+msgstr ""
+
+msgid ""
+"In the case of an image, the feed can be cooperation with the following "
+"plugins."
+msgstr ""
+
 msgid "Arts"
 msgstr ""
 
