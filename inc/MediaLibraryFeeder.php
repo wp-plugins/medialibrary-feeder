@@ -46,9 +46,7 @@ class MediaLibraryFeeder {
 			'post_type' => 'attachment',
 			'numberposts' => -1,
 			'orderby' => 'date',
-			'order' => 'DESC',
-			'post_status' => null,
-			'post_parent' => $post->ID
+			'order' => 'DESC'
 			); 
 
 		$attachments = get_posts($args);
@@ -60,68 +58,76 @@ class MediaLibraryFeeder {
 		if ($attachments) {
 			foreach ( $attachments as $attachment ) {
 			    $feedtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_title', true);
-				$rssmax = $medialibraryfeeder_settings[$feedtitle][rssmax];
-				if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $rssmax > $rsscount[$feedtitle]) {
-					$title = $attachment->post_title;
-					$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
-					$ext = end(explode('.', $attachment->guid));
-					$ext2type = wp_ext2type($ext);
-					$thumblink = NULL;
-					$link_url = NULL;
-					$file_size = NULL;
-					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
-					$blogusers = get_users($attachment->ID);
-					$author_name = $blogusers[0]->display_name;
-					$blog_name = get_bloginfo('name');
-					$length = NULL;
-					if ( $ext2type === 'image' ) {
-						$attachment_image_src = wp_get_attachment_image_src($attachment->ID, 'full');
-						$link_url = $attachment_image_src[0];
-					} else {
-						$link_url = $attachment->guid;
-						if ( $ext2type === 'audio' || $ext2type === 'video' ) {
-							$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
-							$file_size = $attachment_metadata['filesize'];
-							$length = $attachment_metadata['length_formatted'];
+				if ( !empty($feedtitle) ) {
+					$rssmax = $medialibraryfeeder_settings[$feedtitle]['rssmax'];
+					if( !isset($rsscount[$feedtitle]) ){ $rsscount[$feedtitle] = 0; }
+					if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $rssmax > $rsscount[$feedtitle]) {
+						$title = $attachment->post_title;
+						$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
+						$exts = explode('.', $attachment->guid);
+						$ext = end($exts);
+						$ext2type = wp_ext2type($ext);
+						$thumblink = NULL;
+						$link_url = NULL;
+						$file_size = NULL;
+						$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
+						$blogusers = get_users($attachment->ID);
+						$author_name = $blogusers[0]->display_name;
+						$blog_name = get_bloginfo('name');
+						$length = NULL;
+						if ( $ext2type === 'image' ) {
+							$attachment_image_src = wp_get_attachment_image_src($attachment->ID, 'full');
+							$link_url = $attachment_image_src[0];
+						} else {
+							$link_url = $attachment->guid;
+							if ( $ext2type === 'audio' || $ext2type === 'video' ) {
+								$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
+								$file_size = $attachment_metadata['filesize'];
+								$length = $attachment_metadata['length_formatted'];
+							}
 						}
+						$img_url = '<a href="'.$link_url.'">'.$thumblink.'</a>';
+						if( isset($xmlitems[$feedtitle]) ){
+							$xmlitems[$feedtitle] .= "<item>\n";
+						} else {
+							$xmlitems[$feedtitle] = "<item>\n";
+						}
+						$xmlitems[$feedtitle] .= "<title>".$title."</title>\n";
+						$xmlitems[$feedtitle] .= "<link>".$link_url."</link>\n";
+						if( !empty($thumblink) ) {
+							$xmlitems[$feedtitle] .= "<description><![CDATA[".$img_url."]]>".htmlentities($attachment->post_content)."</description>\n";
+						} else {
+							$xmlitems[$feedtitle] .= "<description>". htmlentities($attachment->post_content)."</description>\n";
+						}
+						if ( $ext === 'm4a' || $ext === 'mp3' || $ext === 'mov' || $ext === 'mp4' || $ext === 'm4v' || $ext === 'pdf' || $ext === 'epub' ) {
+							$itunes_author = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_author', true );
+							$itunes_subtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_subtitle', true );
+							$itunes_summary = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_summary', true );
+							$itunes_image = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_image', true );
+							$itunes_block = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_block', true );
+							$itunes_explicit = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_explicit', true );
+							$itunes_isClosedCaptioned = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_isClosedCaptioned', true );
+							$itunes_order = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_order', true );
+							if ( empty($itunes_author) ) { $itunes_author = $author_name; }
+							$xmlitems[$feedtitle] .= "<itunes:author>".$itunes_author."</itunes:author>\n";
+							if ( !empty($itunes_subtitle) ) { $xmlitems[$feedtitle] .= "<itunes:subtitle>".$itunes_subtitle."</itunes:subtitle>\n"; }
+							if ( !empty($itunes_summary) ) { $xmlitems[$feedtitle] .= "<itunes:summary>".$itunes_summary."</itunes:summary>\n"; }
+							if ( !empty($itunes_image) ) { $xmlitems[$feedtitle] .= '<itunes:image href="'.$itunes_image.'"'." />\n"; }
+							if ( !empty($itunes_block) ) { $xmlitems[$feedtitle] .= "<itunes:block>".$itunes_block."</itunes:block>\n"; }
+							if ( !empty($itunes_explicit) ) { $xmlitems[$feedtitle] .= "<itunes:explicit>".$itunes_explicit."</itunes:explicit>\n"; }
+							if ( !empty($itunes_isClosedCaptioned) ) { $xmlitems[$feedtitle] .= "<itunes:isClosedCaptioned>".$itunes_isClosedCaptioned."</itunes:isClosedCaptioned>\n"; }
+							if ( !empty($itunes_order) ) { $xmlitems[$feedtitle] .= "<itunes:order>".$itunes_order."</itunes:order>\n"; }
+							if ( !empty($length) ) { $xmlitems[$feedtitle] .= "<itunes:duration>".$length."</itunes:duration>\n"; }
+						}
+						$xmlitems[$feedtitle] .= "<guid>".$link_url."</guid>\n";
+						$xmlitems[$feedtitle] .= "<dc:creator>".$blog_name."</dc:creator>\n";
+						$xmlitems[$feedtitle] .= "<pubDate>".$stamptime."</pubDate>\n";
+						if ( $ext2type === 'audio' || $ext2type === 'video' ){
+							$xmlitems[$feedtitle] .= '<enclosure url="'.$link_url.'" length="'.$file_size.'" type="'.$this->mime_type($ext).'" />'."\n";
+						}
+						$xmlitems[$feedtitle] .= "</item>\n";
+						++$rsscount[$feedtitle];
 					}
-					$img_url = '<a href="'.$link_url.'">'.$thumblink.'</a>';
-					$xmlitems[$feedtitle] .= "<item>\n";
-					$xmlitems[$feedtitle] .= "<title>".$title."</title>\n";
-					$xmlitems[$feedtitle] .= "<link>".$link_url."</link>\n";
-					if( !empty($thumblink) ) {
-						$xmlitems[$feedtitle] .= "<description><![CDATA[".$img_url."]]>".$attachment->post_content."</description>\n";
-					} else {
-						$xmlitems[$feedtitle] .= "<description>".$attachment->post_content."</description>\n";
-					}
-					if ( $ext === 'm4a' || $ext === 'mp3' || $ext === 'mov' || $ext === 'mp4' || $ext === 'm4v' || $ext === 'pdf' || $ext === 'epub' ) {
-						$itunes_author = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_author', true );
-						$itunes_subtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_subtitle', true );
-						$itunes_summary = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_summary', true );
-						$itunes_image = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_image', true );
-						$itunes_block = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_block', true );
-						$itunes_explicit = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_explicit', true );
-						$itunes_isClosedCaptioned = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_isClosedCaptioned', true );
-						$itunes_order = get_post_meta( $attachment->ID, 'medialibraryfeeder_itunes_order', true );
-						if ( empty($itunes_author) ) { $itunes_author = $author_name; }
-						$xmlitems[$feedtitle] .= "<itunes:author>".$itunes_author."</itunes:author>\n";
-						if ( !empty($itunes_subtitle) ) { $xmlitems[$feedtitle] .= "<itunes:subtitle>".$itunes_subtitle."</itunes:subtitle>\n"; }
-						if ( !empty($itunes_summary) ) { $xmlitems[$feedtitle] .= "<itunes:summary>".$itunes_summary."</itunes:summary>\n"; }
-						if ( !empty($itunes_image) ) { $xmlitems[$feedtitle] .= '<itunes:image href="'.$itunes_image.'"'." />\n"; }
-						if ( !empty($itunes_block) ) { $xmlitems[$feedtitle] .= "<itunes:block>".$itunes_block."</itunes:block>\n"; }
-						if ( !empty($itunes_explicit) ) { $xmlitems[$feedtitle] .= "<itunes:explicit>".$itunes_explicit."</itunes:explicit>\n"; }
-						if ( !empty($itunes_isClosedCaptioned) ) { $xmlitems[$feedtitle] .= "<itunes:isClosedCaptioned>".$itunes_isClosedCaptioned."</itunes:isClosedCaptioned>\n"; }
-						if ( !empty($itunes_order) ) { $xmlitems[$feedtitle] .= "<itunes:order>".$itunes_order."</itunes:order>\n"; }
-						if ( !empty($length) ) { $xmlitems[$feedtitle] .= "<itunes:duration>".$length."</itunes:duration>\n"; }
-					}
-					$xmlitems[$feedtitle] .= "<guid>".$link_url."</guid>\n";
-					$xmlitems[$feedtitle] .= "<dc:creator>".$blog_name."</dc:creator>\n";
-					$xmlitems[$feedtitle] .= "<pubDate>".$stamptime."</pubDate>\n";
-					if ( $ext2type === 'audio' || $ext2type === 'video' ){
-						$xmlitems[$feedtitle] .= '<enclosure url="'.$link_url.'" length="'.$file_size.'" type="'.$this->mime_type($ext).'" />'."\n";
-					}
-					$xmlitems[$feedtitle] .= "</item>\n";
-					++$rsscount[$feedtitle];
 				}
 			}
 		}
@@ -151,12 +157,14 @@ class MediaLibraryFeeder {
 			$homeurl = home_url();
 			$feedlanguage = WPLANG;
 			$stamptime = mysql2date( DATE_RSS, time() );
-			$itunescategory = stripslashes($medialibraryfeeder_settings[$feedtitle][itunes_category_1]);
-			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle][itunes_category_2]);
-			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle][itunes_category_3]);
+			$itunescategory = stripslashes($medialibraryfeeder_settings[$feedtitle]['itunes_category_1']);
+			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle]['itunes_category_2']);
+			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle]['itunes_category_3']);
 			$itunescategory = str_replace( '&', '&amp;', $itunescategory );
-			if ( !empty($medialibraryfeeder_settings[$feedtitle][itunes_newfeedurl]) ) {
-				$itunesnewfeedurl = '<itunes:new-feed-url>'.$medialibraryfeeder_settings[$feedtitle][itunes_newfeedurl].'</itunes:new-feed-url>';
+			if ( !empty($medialibraryfeeder_settings[$feedtitle]['itunes_newfeedurl']) ) {
+				$itunesnewfeedurl = '<itunes:new-feed-url>'.$medialibraryfeeder_settings[$feedtitle]['itunes_newfeedurl'].'</itunes:new-feed-url>';
+			} else {
+				$itunesnewfeedurl = NULL;
 			}
 
 //RSS Feed
@@ -168,26 +176,26 @@ $xml_begin = <<<XMLBEGIN
  xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd"
  version="2.0">
 <channel>
-<ttl>{$medialibraryfeeder_settings[$feedtitle][ttl]}</ttl>
+<ttl>{$medialibraryfeeder_settings[$feedtitle]['ttl']}</ttl>
 <title>{$feedtitle}</title>
 <link>{$homeurl}</link>
-<description>{$medialibraryfeeder_settings[$feedtitle][description]}</description>
+<description>{$medialibraryfeeder_settings[$feedtitle]['description']}</description>
 <language>$feedlanguage</language>
 <lastBuildDate>$stamptime</lastBuildDate>
-<copyright>{$medialibraryfeeder_settings[$feedtitle][copyright]}</copyright>
-<itunes:author>{$medialibraryfeeder_settings[$feedtitle][itunes_author]}</itunes:author>
-<itunes:block>{$medialibraryfeeder_settings[$feedtitle][itunes_block]}</itunes:block>
+<copyright>{$medialibraryfeeder_settings[$feedtitle]['copyright']}</copyright>
+<itunes:author>{$medialibraryfeeder_settings[$feedtitle]['itunes_author']}</itunes:author>
+<itunes:block>{$medialibraryfeeder_settings[$feedtitle]['itunes_block']}</itunes:block>
 {$itunescategory}
-<itunes:image href="{$medialibraryfeeder_settings[$feedtitle][itunes_image]}" />
-<itunes:explicit>{$medialibraryfeeder_settings[$feedtitle][itunes_explicit]}</itunes:explicit>
-<itunes:complete>{$medialibraryfeeder_settings[$feedtitle][itunes_complete]}</itunes:complete>
+<itunes:image href="{$medialibraryfeeder_settings[$feedtitle]['itunes_image']}" />
+<itunes:explicit>{$medialibraryfeeder_settings[$feedtitle]['itunes_explicit']}</itunes:explicit>
+<itunes:complete>{$medialibraryfeeder_settings[$feedtitle]['itunes_complete']}</itunes:complete>
 {$itunesnewfeedurl}
 <itunes:owner>
-<itunes:name>{$medialibraryfeeder_settings[$feedtitle][itunes_name]}</itunes:name>
-<itunes:email>{$medialibraryfeeder_settings[$feedtitle][itunes_email]}</itunes:email>
+<itunes:name>{$medialibraryfeeder_settings[$feedtitle]['itunes_name']}</itunes:name>
+<itunes:email>{$medialibraryfeeder_settings[$feedtitle]['itunes_email']}</itunes:email>
 </itunes:owner>
-<itunes:subtitle>{$medialibraryfeeder_settings[$feedtitle][itunes_subtitle]}</itunes:subtitle>
-<itunes:summary>{$medialibraryfeeder_settings[$feedtitle][itunes_summary]}</itunes:summary>
+<itunes:subtitle>{$medialibraryfeeder_settings[$feedtitle]['itunes_subtitle']}</itunes:subtitle>
+<itunes:summary>{$medialibraryfeeder_settings[$feedtitle]['itunes_summary']}</itunes:summary>
 <generator>MediaLibrary Feeder</generator>
 
 XMLBEGIN;
@@ -299,14 +307,14 @@ XMLEND;
 			'post_type' => 'attachment',
 			'numberposts' => -1,
 			'orderby' => 'date',
-			'order' => 'DESC',
-			'post_status' => null,
-			'post_parent' => $post->ID
+			'order' => 'DESC'
 			); 
 
 		$attachments = get_posts($args);
 
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
+
+		wp_enqueue_style('medialibrary-feeder', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/medialibrary-feeder.css');
 
 		$html = '<h2>'.$feed.'</h2>';
 		$html .= '<div id="playlists-medialibraryfeeder">';
@@ -314,31 +322,35 @@ XMLEND;
 		if ($attachments) {
 			foreach ( $attachments as $attachment ) {
 			    $feedtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_title', true);
-				$rssmax = $medialibraryfeeder_settings[$feedtitle][rssmax];
-				if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $rssmax > $rsscount[$feedtitle] && $feed === $feedtitle ) {
-					$title = $attachment->post_title;
-					$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
-					$ext = end(explode('.', $attachment->guid));
-					$ext2type = wp_ext2type($ext);
-					$thumblink = NULL;
-					$link_url = NULL;
-					$file_size = NULL;
-					$length = NULL;
-					$stamptime = $attachment->post_date;
-					$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
-					if ( isset( $attachment_metadata['filesize'] ) ) {
-						$file_size = $attachment_metadata['filesize'];
-					} else {
-						$file_size = filesize( get_attached_file($attachment->ID) );
+				if ( !empty($feedtitle) ) {
+					$rssmax = $medialibraryfeeder_settings[$feedtitle]['rssmax'];
+					if( !isset($rsscount[$feedtitle]) ){ $rsscount[$feedtitle] = 0; }
+					if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $rssmax > $rsscount[$feedtitle] && $feed === $feedtitle ) {
+						$title = $attachment->post_title;
+						$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
+						$exts = explode('.', $attachment->guid);
+						$ext = end($exts);
+						$ext2type = wp_ext2type($ext);
+						$thumblink = NULL;
+						$link_url = NULL;
+						$file_size = NULL;
+						$length = NULL;
+						$stamptime = $attachment->post_date;
+						$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
+						if ( isset( $attachment_metadata['filesize'] ) ) {
+							$file_size = $attachment_metadata['filesize'];
+						} else {
+							$file_size = filesize( get_attached_file($attachment->ID) );
+						}
+						$metadata = '<div>'.$stamptime.'&nbsp;&nbsp;'.size_format($file_size);
+						if ( $ext2type === 'audio' || $ext2type === 'video' ) {
+							$length = $attachment_metadata['length_formatted'];
+							$metadata .= '&nbsp;&nbsp;'.$length;
+						}
+						$metadata .= '</div>';
+						$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
+						$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', $permalink, FALSE , $thumblink.$title.$metadata ).'</li>';
 					}
-					$metadata = '<div>'.$stamptime.'&nbsp;&nbsp;'.size_format($file_size);
-					if ( $ext2type === 'audio' || $ext2type === 'video' ) {
-						$length = $attachment_metadata['length_formatted'];
-						$metadata .= '&nbsp;&nbsp;'.$length;
-					}
-					$metadata .= '</div>';
-					$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
-					$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', $permalink, FALSE , $thumblink.$title.$metadata ).'</li>';
 				}
 			}
 		}

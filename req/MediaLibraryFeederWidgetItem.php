@@ -44,7 +44,7 @@ class MediaLibraryFeederWidgetItem extends WP_Widget {
 			$feedwidget_tbl = get_option( 'medialibraryfeeder_feedwidget' );
 			foreach ( $feedwidget_tbl as $feedtitle => $xmlurl ) {
 				$checkbox[$feedtitle] = apply_filters('widget_checkbox', $instance[$feedtitle]);
-				$iconurl = $medialibraryfeeder_settings[$feedtitle][iconurl];
+				$iconurl = $medialibraryfeeder_settings[$feedtitle]['iconurl'];
 				if ($checkbox[$feedtitle]) {
 					?>
 					<div>
@@ -74,8 +74,11 @@ class MediaLibraryFeederWidgetItem extends WP_Widget {
 	
 	function form($instance) {
 
-		$title = esc_attr($instance['title']);
-
+		if (isset($instance['title'])) {
+			$title = esc_attr($instance['title']);
+		} else {
+			$title = NULL;
+		}
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?>:</label>
@@ -86,7 +89,11 @@ class MediaLibraryFeederWidgetItem extends WP_Widget {
 
 		$feedwidget_tbl = get_option( 'medialibraryfeeder_feedwidget' );
 		foreach ( $feedwidget_tbl as $feedtitle => $xmlurl ) {
-			$checkbox[$feedtitle] = esc_attr($instance[$feedtitle]);
+			if (isset($instance[$feedtitle])) {
+				$checkbox[$feedtitle] = esc_attr($instance[$feedtitle]);
+			} else {
+				$checkbox[$feedtitle] = NULL;
+			}
 			?>
 			<tr>
 			<td align="left" valign="middle" nowrap>

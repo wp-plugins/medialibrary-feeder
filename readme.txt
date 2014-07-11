@@ -4,7 +4,7 @@ Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 2.5
+Stable tag: 2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ none
 
 == Changelog ==
 
+= 2.6 =
+Fixed of problem of error in debug mode.
+
 = 2.5 =
 Add shortcode option.
 Can be cooperation with Boxers and Swipers.
@@ -74,6 +77,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.6 =
 = 2.5 =
 = 2.4 =
 = 2.3 =

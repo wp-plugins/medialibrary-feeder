@@ -56,6 +56,7 @@ class MediaLibraryFeederAdmin {
 		}
 
 		wp_enqueue_style( 'jquery-ui-tabs', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/jquery-ui.css' );
+		wp_enqueue_script('jquery');
 		wp_enqueue_script( 'jquery-ui-tabs' );
 		wp_enqueue_script( 'jquery-ui-tabs-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery-ui-tabs-in.js' );
 		wp_enqueue_script( 'jquery-check-selectall-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery-check-selectall-in.js' );
@@ -68,7 +69,7 @@ class MediaLibraryFeederAdmin {
 		$scriptname = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?page=medialibraryfeeder';
 
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
-		$pagemax = $medialibraryfeeder_settings[pagemax];
+		$pagemax = $medialibraryfeeder_settings['pagemax'];
 
 		?>
 
@@ -108,14 +109,13 @@ class MediaLibraryFeederAdmin {
 				'post_type' => 'attachment',
 				'numberposts' => -1,
 				'orderby' => 'date',
-				'order' => 'DESC',
-				'post_status' => null,
-				'post_parent' => $post->ID
+				'order' => 'DESC'
 				); 
 
 			$attachments = get_posts($args);
 
 			// pagenation
+			$pageallcount = 0;
 			foreach ( $attachments as $attachment ) {
 				++$pageallcount;
 			}
@@ -156,7 +156,8 @@ class MediaLibraryFeederAdmin {
 						$title = $attachment->post_title;
 						$link = $attachment->guid;
 						$permalink = get_attachment_link($attachment->ID);
-						$ext = end(explode('.', $attachment->guid));
+						$exts = explode('.', $attachment->guid);
+						$ext = end($exts);
 						$date = $attachment->post_date;
 						$thumblinks = wp_get_attachment_image_src( $attachment->ID, 'thumbnail', TRUE );
 						$thumblink = '<img width="50" height="50" src="'.$thumblinks[0].'">';
@@ -286,7 +287,7 @@ class MediaLibraryFeederAdmin {
 		<h2><?php _e('Advanced')._e('Settings'); ?></h2>
 
 			<?php
-			$select_title = $_POST['medialibraryfeeder_settings_select_title'];
+			if(isset($_POST['medialibraryfeeder_settings_select_title'])){ $select_title = $_POST['medialibraryfeeder_settings_select_title']; }
 			if( empty($select_title) ) {
 				$key1count = 0; 
 				foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
@@ -634,33 +635,33 @@ class MediaLibraryFeederAdmin {
 
 		$settings_tbl = array();
 
-		$settings_tbl[pagemax] = intval($_POST['medialibraryfeeder_settings_pagemax']);
+		if(isset($_POST['medialibraryfeeder_settings_pagemax'])){ $settings_tbl['pagemax'] = intval($_POST['medialibraryfeeder_settings_pagemax']); }
 
-		$post_title_new = $_POST['medialibraryfeeder_settings_titles_title_new'];
-		$post_description_new = $_POST['medialibraryfeeder_settings_titles_description_new'];
-		$post_rssmax_new = intval($_POST['medialibraryfeeder_settings_titles_rssmax_new']);
-		$post_iconurl_new = $_POST['medialibraryfeeder_settings_titles_iconurl_new'];
-		$post_title = $_POST['medialibraryfeeder_settings_titles_title'];
-		$post_description = $_POST['medialibraryfeeder_settings_titles_description'];
-		$post_rssmax = intval($_POST['medialibraryfeeder_settings_titles_rssmax']);
-		$post_iconurl = $_POST['medialibraryfeeder_settings_titles_iconurl'];
-		$post_ttl = intval($_POST['medialibraryfeeder_settings_titles_ttl']);
-		$post_copyright = $_POST['medialibraryfeeder_settings_titles_copyright'];
-		$post_itunes_author = $_POST['medialibraryfeeder_settings_titles_itunes_author'];
-		$post_itunes_block = $_POST['medialibraryfeeder_settings_titles_itunes_block'];
-		$post_itunes_category_1 = $_POST['medialibraryfeeder_settings_titles_itunes_category_1'];
-		$post_itunes_category_2 = $_POST['medialibraryfeeder_settings_titles_itunes_category_2'];
-		$post_itunes_category_3 = $_POST['medialibraryfeeder_settings_titles_itunes_category_3'];
-		$post_itunes_image = $_POST['medialibraryfeeder_settings_titles_itunes_image'];
-		$post_itunes_explicit = $_POST['medialibraryfeeder_settings_titles_itunes_explicit'];
-		$post_itunes_complete = $_POST['medialibraryfeeder_settings_titles_itunes_complete'];
-		$post_itunes_newfeedurl = $_POST['medialibraryfeeder_settings_titles_itunes_newfeedurl'];
-		$post_itunes_name = $_POST['medialibraryfeeder_settings_titles_itunes_name'];
-		$post_itunes_email = $_POST['medialibraryfeeder_settings_titles_itunes_email'];
-		$post_itunes_subtitle = $_POST['medialibraryfeeder_settings_titles_itunes_subtitle'];
-		$post_itunes_summary = $_POST['medialibraryfeeder_settings_titles_itunes_summary'];
+		if(isset($_POST['medialibraryfeeder_settings_titles_title_new'])){ $post_title_new = $_POST['medialibraryfeeder_settings_titles_title_new']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_description_new'])){ $post_description_new = $_POST['medialibraryfeeder_settings_titles_description_new']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_rssmax_new'])){ $post_rssmax_new = intval($_POST['medialibraryfeeder_settings_titles_rssmax_new']); }
+		if(isset($_POST['medialibraryfeeder_settings_titles_iconurl_new'])){ $post_iconurl_new = $_POST['medialibraryfeeder_settings_titles_iconurl_new']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_title'])){ $post_title = $_POST['medialibraryfeeder_settings_titles_title']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_description'])){ $post_description = $_POST['medialibraryfeeder_settings_titles_description']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_rssmax'])){ $post_rssmax = intval($_POST['medialibraryfeeder_settings_titles_rssmax']); }
+		if(isset($_POST['medialibraryfeeder_settings_titles_iconurl'])){ $post_iconurl = $_POST['medialibraryfeeder_settings_titles_iconurl']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_ttl'])){ $post_ttl = intval($_POST['medialibraryfeeder_settings_titles_ttl']); }
+		if(isset($_POST['medialibraryfeeder_settings_titles_copyright'])){ $post_copyright = $_POST['medialibraryfeeder_settings_titles_copyright']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_author'])){ $post_itunes_author = $_POST['medialibraryfeeder_settings_titles_itunes_author']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_block'])){ $post_itunes_block = $_POST['medialibraryfeeder_settings_titles_itunes_block']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_category_1'])){ $post_itunes_category_1 = $_POST['medialibraryfeeder_settings_titles_itunes_category_1']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_category_2'])){ $post_itunes_category_2 = $_POST['medialibraryfeeder_settings_titles_itunes_category_2']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_category_3'])){ $post_itunes_category_3 = $_POST['medialibraryfeeder_settings_titles_itunes_category_3']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_image'])){ $post_itunes_image = $_POST['medialibraryfeeder_settings_titles_itunes_image']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_explicit'])){ $post_itunes_explicit = $_POST['medialibraryfeeder_settings_titles_itunes_explicit']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_complete'])){ $post_itunes_complete = $_POST['medialibraryfeeder_settings_titles_itunes_complete']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_newfeedurl'])){ $post_itunes_newfeedurl = $_POST['medialibraryfeeder_settings_titles_itunes_newfeedurl']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_name'])){ $post_itunes_name = $_POST['medialibraryfeeder_settings_titles_itunes_name']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_email'])){ $post_itunes_email = $_POST['medialibraryfeeder_settings_titles_itunes_email']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_subtitle'])){ $post_itunes_subtitle = $_POST['medialibraryfeeder_settings_titles_itunes_subtitle']; }
+		if(isset($_POST['medialibraryfeeder_settings_titles_itunes_summary'])){ $post_itunes_summary = $_POST['medialibraryfeeder_settings_titles_itunes_summary']; }
 
-		$delete_titles = $_POST['medialibraryfeeder_settings_delete_title'];
+		if(isset($_POST['medialibraryfeeder_settings_delete_title'])){ $delete_titles = $_POST['medialibraryfeeder_settings_delete_title']; }
 
 		$titles = FALSE;
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
@@ -670,33 +671,33 @@ class MediaLibraryFeederAdmin {
 					$settings_tbl[$key1][$key2] = $value2;
 				}
 				if ( !empty($post_title) ){
-					$settings_tbl[$post_title][description] = $post_description;
-					$settings_tbl[$post_title][rssmax] = $post_rssmax;
-					$settings_tbl[$post_title][iconurl] = $post_iconurl;
-					$settings_tbl[$post_title][ttl] = $post_ttl;
-					$settings_tbl[$post_title][copyright] = $post_copyright;
-					$settings_tbl[$post_title][itunes_author] = $post_itunes_author;
-					$settings_tbl[$post_title][itunes_block] = $post_itunes_block;
-					$settings_tbl[$post_title][itunes_category_1] = $post_itunes_category_1;
-					$settings_tbl[$post_title][itunes_category_2] = $post_itunes_category_2;
-					$settings_tbl[$post_title][itunes_category_3] = $post_itunes_category_3;
-					$settings_tbl[$post_title][itunes_image] = $post_itunes_image;
-					$settings_tbl[$post_title][itunes_explicit] = $post_itunes_explicit;
-					$settings_tbl[$post_title][itunes_complete] = $post_itunes_complete;
-					$settings_tbl[$post_title][itunes_newfeedurl] = $post_itunes_newfeedurl;
-					$settings_tbl[$post_title][itunes_name] = $post_itunes_name;
-					$settings_tbl[$post_title][itunes_email] = $post_itunes_email;
-					$settings_tbl[$post_title][itunes_subtitle] = $post_itunes_subtitle;
-					$settings_tbl[$post_title][itunes_summary] = $post_itunes_summary;
+					$settings_tbl[$post_title]['description'] = $post_description;
+					$settings_tbl[$post_title]['rssmax'] = $post_rssmax;
+					$settings_tbl[$post_title]['iconurl'] = $post_iconurl;
+					$settings_tbl[$post_title]['ttl'] = $post_ttl;
+					$settings_tbl[$post_title]['copyright'] = $post_copyright;
+					$settings_tbl[$post_title]['itunes_author'] = $post_itunes_author;
+					$settings_tbl[$post_title]['itunes_block'] = $post_itunes_block;
+					$settings_tbl[$post_title]['itunes_category_1'] = $post_itunes_category_1;
+					$settings_tbl[$post_title]['itunes_category_2'] = $post_itunes_category_2;
+					$settings_tbl[$post_title]['itunes_category_3'] = $post_itunes_category_3;
+					$settings_tbl[$post_title]['itunes_image'] = $post_itunes_image;
+					$settings_tbl[$post_title]['itunes_explicit'] = $post_itunes_explicit;
+					$settings_tbl[$post_title]['itunes_complete'] = $post_itunes_complete;
+					$settings_tbl[$post_title]['itunes_newfeedurl'] = $post_itunes_newfeedurl;
+					$settings_tbl[$post_title]['itunes_name'] = $post_itunes_name;
+					$settings_tbl[$post_title]['itunes_email'] = $post_itunes_email;
+					$settings_tbl[$post_title]['itunes_subtitle'] = $post_itunes_subtitle;
+					$settings_tbl[$post_title]['itunes_summary'] = $post_itunes_summary;
 				}
 				$titles = TRUE;
 			}
 		}
 
 		if ( !empty($post_title_new) && !empty($post_description_new) && !empty($post_rssmax_new) && !empty($post_iconurl_new) ){
-			$settings_tbl[$post_title_new][description] = $post_description_new;
-			$settings_tbl[$post_title_new][rssmax] = $post_rssmax_new;
-			$settings_tbl[$post_title_new][iconurl] = $post_iconurl_new;
+			$settings_tbl[$post_title_new]['description'] = $post_description_new;
+			$settings_tbl[$post_title_new]['rssmax'] = $post_rssmax_new;
+			$settings_tbl[$post_title_new]['iconurl'] = $post_iconurl_new;
 
 			$blog_description =  get_bloginfo ( 'description' );
 			$blogusers = get_users();
@@ -705,21 +706,21 @@ class MediaLibraryFeederAdmin {
 			$itunes_name = $copyright;
 			$itunes_email = $blogusers[0]->user_email;
 
-			$settings_tbl[$post_title_new][ttl] = 60;
-			$settings_tbl[$post_title_new][copyright] = $copyright;
-			$settings_tbl[$post_title_new][itunes_author] = $itunes_author;
-			$settings_tbl[$post_title_new][itunes_block] = 'no';
-			$settings_tbl[$post_title_new][itunes_category_1] = '';
-			$settings_tbl[$post_title_new][itunes_category_2] = '';
-			$settings_tbl[$post_title_new][itunes_category_3] = '';
-			$settings_tbl[$post_title_new][itunes_image] = '';
-			$settings_tbl[$post_title_new][itunes_explicit] = 'no';
-			$settings_tbl[$post_title_new][itunes_complete] = 'no';
-			$settings_tbl[$post_title_new][itunes_newfeedurl] = '';
-			$settings_tbl[$post_title_new][itunes_name] = $itunes_name;
-			$settings_tbl[$post_title_new][itunes_email] = $itunes_email;
-			$settings_tbl[$post_title_new][itunes_subtitle] = '';
-			$settings_tbl[$post_title_new][itunes_summary] = $blog_description;
+			$settings_tbl[$post_title_new]['ttl'] = 60;
+			$settings_tbl[$post_title_new]['copyright'] = $copyright;
+			$settings_tbl[$post_title_new]['itunes_author'] = $itunes_author;
+			$settings_tbl[$post_title_new]['itunes_block'] = 'no';
+			$settings_tbl[$post_title_new]['itunes_category_1'] = '';
+			$settings_tbl[$post_title_new]['itunes_category_2'] = '';
+			$settings_tbl[$post_title_new]['itunes_category_3'] = '';
+			$settings_tbl[$post_title_new]['itunes_image'] = '';
+			$settings_tbl[$post_title_new]['itunes_explicit'] = 'no';
+			$settings_tbl[$post_title_new]['itunes_complete'] = 'no';
+			$settings_tbl[$post_title_new]['itunes_newfeedurl'] = '';
+			$settings_tbl[$post_title_new]['itunes_name'] = $itunes_name;
+			$settings_tbl[$post_title_new]['itunes_email'] = $itunes_email;
+			$settings_tbl[$post_title_new]['itunes_subtitle'] = '';
+			$settings_tbl[$post_title_new]['itunes_summary'] = $blog_description;
 		}
 
 		if ( $titles ) {
@@ -752,10 +753,10 @@ class MediaLibraryFeederAdmin {
 	 */
 	function post_meta_updated() {
 
-		$medialibraryfeeder_applys = $_POST['medialibraryfeeder_applys'];
-		$medialibraryfeeder_titles = $_POST['medialibraryfeeder_titles'];
+		if(isset($_POST['medialibraryfeeder_applys'])){ $medialibraryfeeder_applys = $_POST['medialibraryfeeder_applys']; }
+		if(isset($_POST['medialibraryfeeder_titles'])){ $medialibraryfeeder_titles = $_POST['medialibraryfeeder_titles']; }
 
-		$delete_titles = $_POST['medialibraryfeeder_settings_delete_title'];
+		if(isset($_POST['medialibraryfeeder_settings_delete_title'])){ $delete_titles = $_POST['medialibraryfeeder_settings_delete_title']; }
 
 		// for delete post meta
 		$medialibraryfeeder_arr = array(
@@ -793,8 +794,7 @@ class MediaLibraryFeederAdmin {
 
 		$args = array(
 			'post_type' => 'attachment',
-			'numberposts' => -1,
-			'post_parent' => $post->ID
+			'numberposts' => -1
 			); 
 		$attachments = get_posts($args);
 		foreach ( $attachments as $attachment ) {

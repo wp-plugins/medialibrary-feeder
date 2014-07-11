@@ -2,7 +2,7 @@
 /*
 Plugin Name: MediaLibrary Feeder
 Plugin URI: http://wordpress.org/plugins/medialibrary-feeder/
-Version: 2.5
+Version: 2.6
 Description: Output as feed the media library. Generate a podcast for iTunes Store.
 Author: Katsushi Kawamori
 Author URI: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
@@ -34,9 +34,6 @@ Domain Path: /languages
 	$medialibraryfeederregist = new MediaLibraryFeederRegist();
 	add_action('admin_init', array($medialibraryfeederregist, 'register_settings'));
 	unset($medialibraryfeederregist);
-
-	add_action('wp_head', wp_enqueue_script('jquery'));
-	add_action('wp_head', wp_enqueue_style('medialibrary-feeder', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/medialibrary-feeder.css'));
 
 	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederAdmin.php' );
 	$medialibraryfeederadmin = new MediaLibraryFeederAdmin();
