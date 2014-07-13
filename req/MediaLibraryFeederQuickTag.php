@@ -29,6 +29,7 @@ class MediaLibraryFeederQuickTag {
 
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
 
+		$shortcode_titles = NULL;
 		foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
 			if( is_array($value1) ) {
 				$shortcode_titles .= '<option value="[mlfeed feed=&#39;'.$key1.'&#39;]">'.$key1.'</option>';

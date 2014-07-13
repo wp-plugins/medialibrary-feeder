@@ -851,7 +851,8 @@ class MediaLibraryFeederAdmin {
 		}
 	    $form_fields["medialibraryfeeder_title"]["html"] .= "</select>\n";
 
-		$ext = end(explode( '.', wp_get_attachment_url($post->ID) ));
+		$exts = explode( '.', wp_get_attachment_url($post->ID) );
+		$ext = end($exts);
 		if ( $ext === 'm4a' || $ext === 'mp3' || $ext === 'mov' || $ext === 'mp4' || $ext === 'm4v' || $ext === 'pdf' || $ext === 'epub' ) {
 			// text
 			$blogusers = get_users($post->ID);
@@ -969,9 +970,13 @@ class MediaLibraryFeederAdmin {
 		if($column_name === 'column_medialibraryfeeder_apply'){
 			$medialibraryfeeder_apply = get_post_meta( $post_id, 'medialibraryfeeder_apply' );
 			$medialibraryfeeder_title = get_post_meta( $post_id, 'medialibraryfeeder_title' );
-			if ($medialibraryfeeder_apply[0] === 'true'){
-				echo '<div>'.__('Apply').'</div>';
-				echo __('Feed Title', 'medialibraryfeeder').':&nbsp&nbsp&nbsp'.$medialibraryfeeder_title[0];
+			if ( !empty($medialibraryfeeder_apply) ){
+				if ($medialibraryfeeder_apply[0] === 'true'){
+					echo '<div>'.__('Apply').'</div>';
+					echo __('Feed Title', 'medialibraryfeeder').':&nbsp&nbsp&nbsp'.$medialibraryfeeder_title[0];
+				} else {
+					_e('None');
+				}
 			} else {
 				_e('None');
 			}
