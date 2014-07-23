@@ -54,3 +54,17 @@
 
 #playlists-medialibraryfeeder li:hover {background: #f6efe2;}
 #playlists-medialibraryfeeder a:hover {color: #000000; background: #f6efe2;}
+
+#pagenation-medialibraryfeeder li {
+	text-align: center;
+	display: block;
+	font: bold 120% Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	line-height: 3em;;
+}
+
+#pagenation-medialibraryfeeder li a {
+	text-decoration: none;
+}
+
+#pagenation-medialibraryfeeder a:hover {color: #000000; background: #f6efe2;}
