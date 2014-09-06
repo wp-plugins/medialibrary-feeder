@@ -388,17 +388,19 @@ XMLEND;
 		}
 		$html .= '</div>';
 
-		$wp_uploads = wp_upload_dir();
-		$wp_upload_url = $wp_uploads['baseurl'];
-		foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
-			if( is_array($value1) ) {
-				if ( $key1 ===  $feedicontitle ){
-					$xmlurl = $wp_upload_url.'/'.md5($key1).'.xml';
+		if ( isset($feedicontitle) ) {
+			$wp_uploads = wp_upload_dir();
+			$wp_upload_url = $wp_uploads['baseurl'];
+			foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
+				if( is_array($value1) ) {
+					if ( $key1 ===  $feedicontitle ){
+						$xmlurl = $wp_upload_url.'/'.md5($key1).'.xml';
+					}
 				}
 			}
+			$iconurl = $medialibraryfeeder_settings[$feedicontitle]['iconurl'];
+			$html .= '<div align="right"><a href="'.$xmlurl.'"><img src="'.$iconurl.'"></a></div>';
 		}
-		$iconurl = $medialibraryfeeder_settings[$feedicontitle]['iconurl'];
-		$html .= '<div align="right"><a href="'.$xmlurl.'"><img src="'.$iconurl.'"></a></div>';
 
 		return $html;
 

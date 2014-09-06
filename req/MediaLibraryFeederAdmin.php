@@ -44,6 +44,24 @@ class MediaLibraryFeederAdmin {
 		add_options_page( 'MediaLibrary Feeder Options', 'MediaLibrary Feeder', 'manage_options', 'medialibraryfeeder', array($this, 'plugin_options') );
 	}
 
+	/* ==================================================
+	 * Add Css and Script
+	 * @since	2.9
+	 */
+	function load_custom_wp_admin_style() {
+		wp_enqueue_style( 'jquery-responsiveTabs', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/responsive-tabs.css' );
+		wp_enqueue_style( 'jquery-responsiveTabs-style', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/style.css' );
+		wp_enqueue_script('jquery');
+		wp_enqueue_script( 'jquery-responsiveTabs', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery.responsiveTabs.min.js' );
+	}
+
+	/* ==================================================
+	 * Add Script on footer
+	 * @since	2.9
+	 */
+	function load_custom_wp_admin_style2() {
+		echo $this->add_jscss();
+	}
 
 	/* ==================================================
 	 * Settings page
@@ -54,12 +72,6 @@ class MediaLibraryFeederAdmin {
 		if ( !current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-
-		wp_enqueue_style( 'jquery-ui-tabs', MEDIALIBRARYFEEDER_PLUGIN_URL.'/css/jquery-ui.css' );
-		wp_enqueue_script('jquery');
-		wp_enqueue_script( 'jquery-ui-tabs' );
-		wp_enqueue_script( 'jquery-ui-tabs-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery-ui-tabs-in.js' );
-		wp_enqueue_script( 'jquery-check-selectall-in', MEDIALIBRARYFEEDER_PLUGIN_URL.'/js/jquery-check-selectall-in.js' );
 
 		if( !empty($_POST) ) { 
 			$this->options_updated();
@@ -76,21 +88,21 @@ class MediaLibraryFeederAdmin {
 		<div class="wrap">
 		<h2>MediaLibrary Feeder</h2>
 
-	<div id="tabs">
+	<div id="medialibraryfeeder-admin-tabs">
 	  <ul>
-		<li><a href="#tabs-1"><?php _e('Settings'); ?></a></li>
-		<li><a href="#tabs-2"><?php _e('Registration of feed', 'medialibraryfeeder'); ?></a></li>
-	    <li><a href="#tabs-3"><?php _e('Advanced')._e('Settings'); ?></a></li>
-	    <li><a href="#tabs-4"><?php _e('Caution:'); ?></a></li>
-		<li><a href="#tabs-5"><?php _e('Shortcode',  'medialibraryfeeder'); ?></a></li>
+		<li><a href="#medialibraryfeeder-admin-tabs-1"><?php _e('Settings'); ?></a></li>
+		<li><a href="#medialibraryfeeder-admin-tabs-2"><?php _e('Registration of feed', 'medialibraryfeeder'); ?></a></li>
+	    <li><a href="#medialibraryfeeder-admin-tabs-3"><?php _e('Advanced')._e('Settings'); ?></a></li>
+	    <li><a href="#medialibraryfeeder-admin-tabs-4"><?php _e('Caution:'); ?></a></li>
+		<li><a href="#medialibraryfeeder-admin-tabs-5"><?php _e('Shortcode',  'medialibraryfeeder'); ?></a></li>
 
 	<!--
-		<li><a href="#tabs-6">FAQ</a></li>
+		<li><a href="#medialibraryfeeder-admin-tabs-6">FAQ</a></li>
 	 -->
 	  </ul>
 
 
-	  <div id="tabs-1">
+	  <div id="medialibraryfeeder-admin-tabs-1">
 		<div class="wrap">
 			<h2><?php _e('Settings'); ?></h2>
 
@@ -132,18 +144,20 @@ class MediaLibraryFeederAdmin {
 			?>
 			<table class="wp-list-table widefat">
 			<tbody>
-				<tr><td width="60"></td><td></td><td></td><td></td>
-				<td align="right">
+				<tr>
+				<td colspan="3" align="right">
 				<?php $this->pagenation($page, $pagebegin, $pageend, $pagelast, $scriptname);
 				?>
 				</td>
 				</tr>
 				<tr>
+				<td align="left" valign="middle"><?php _e('Apply'); ?><div><input type="checkbox" id="group_medialibraryfeeder" class="medialibraryfeeder-admin-checkAll"></div></td>
 				<td align="center" valign="middle" width="60"><?php _e('File', 'medialibraryfeeder'); ?></td>
-				<td align="left" valign="middle"><?php _e('Permalink and Filetype', 'medialibraryfeeder'); ?></td>
-				<td align="left" valign="middle"><?php _e('Date/Time'); ?></td>
-				<td align="left" valign="middle"><?php _e('Apply'); ?><div><input type="checkbox" id="group_medialibraryfeeder" class="checkAll"></div></td>
-				<td align="left" valign="middle"><?php _e('Feed Title', 'medialibraryfeeder'); ?></td>
+				<td align="left" valign="middle">
+				<div><?php _e('Permalink and Filetype', 'medialibraryfeeder'); ?></div>
+				<div><?php _e('Date/Time'); ?></div>
+				<div><?php _e('Feed Title', 'medialibraryfeeder'); ?></div>
+				</td>
 				</tr>
 			<?php
 
@@ -160,17 +174,16 @@ class MediaLibraryFeederAdmin {
 						$ext = end($exts);
 						$date = $attachment->post_date;
 						$thumblinks = wp_get_attachment_image_src( $attachment->ID, 'thumbnail', TRUE );
-						$thumblink = '<img width="50" height="50" src="'.$thumblinks[0].'">';
+						$thumblink = '<img width="50" height="50" src="'.$thumblinks[0].'" align="middle">';
 					?>
 						<tr>
-							<td align="center" valign="middle" width="60"><a title="<?php _e('View');?>" href="<?php echo $link; ?>" target="_blank"><?php echo $thumblink; ?></a></td>
-							<td align="left" valign="middle"><div><a style="color: #4682b4;" title="<?php _e('View');?>" href="<?php echo $permalink; ?>" target="_blank"><?php echo $title; ?></a></div><div><?php echo $ext; ?></div></td>
-							<td align="left" valign="middle"><?php echo $date; ?></td>
 							<td align="left" valign="middle">
 							    <input type="hidden" class="group_medialibraryfeeder" name="medialibraryfeeder_applys[<?php echo $attachment->ID; ?>]" value="false">
 							    <input type="checkbox" class="group_medialibraryfeeder" name="medialibraryfeeder_applys[<?php echo $attachment->ID; ?>]" value="true" <?php if ( $apply === 'true' ) { echo 'checked'; }?>>
 							</td>
-							<td align="left" valign="middle">
+							<td align="center" valign="middle" width="60"><a title="<?php _e('View');?>" href="<?php echo $link; ?>" target="_blank"><?php echo $thumblink; ?></a></td>
+							<td align="left" valign="middle"><div><a style="color: #4682b4;" title="<?php _e('View');?>" href="<?php echo $permalink; ?>" target="_blank"><?php echo $title; ?></a>&nbsp&nbsp&nbsp<?php echo $ext; ?></div><div><?php echo $date; ?></div>
+								<div>
 								<select name="medialibraryfeeder_titles[<?php echo $attachment->ID; ?>]">
 								<?php
 										foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
@@ -181,6 +194,7 @@ class MediaLibraryFeederAdmin {
 										}
 								?>
 								</select>
+								</div>
 							</td>
 						</tr>
 					<?php
@@ -193,8 +207,8 @@ class MediaLibraryFeederAdmin {
 				}
 			}
 			?>
-				<tr><td width="60"></td><td></td><td></td><td></td>
-				<td align="right">
+				<tr>
+				<td colspan="3" align="right">
 				<?php $this->pagenation($page, $pagebegin, $pageend, $pagelast, $scriptname);
 				?>
 				</td>
@@ -211,67 +225,91 @@ class MediaLibraryFeederAdmin {
 		</div>
 	  </div>
 
-	  <div id="tabs-2">
+	  <div id="medialibraryfeeder-admin-tabs-2">
 		<div class="wrap">
 		<h2><?php _e('Registration of feed', 'medialibraryfeeder'); ?></h2>
 
-			<form method="post" action="<?php echo $scriptname.'&#tabs-2'; ?>">
+			<form method="post" action="<?php echo $scriptname.'&#medialibraryfeeder-admin-tabs-2'; ?>">
 
-			<p>
 			<input type="hidden" name="medialibraryfeeder_settings_pagemax" value="<?php echo $pagemax; ?>">
-			<div><?php _e('Feed Title', 'medialibraryfeeder'); ?>:<input type="text" name="medialibraryfeeder_settings_titles_title_new" value=""></div>
-			<div><?php _e('Feed Description', 'medialibraryfeeder'); ?>:</div><textarea name="medialibraryfeeder_settings_titles_description_new" rows="2" cols="80" value=""></textarea>
-			<div><?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?>:<input type="text" name="medialibraryfeeder_settings_titles_rssmax_new" value="" size="3" /></div>
-			<div><?php _e('Icon Url', 'medialibraryfeeder'); ?>:<input type="text" name="medialibraryfeeder_settings_titles_iconurl_new" value="" size="100"/></div>
-			</p>
+			<div style="padding:10px;border:#CCC 2px solid; margin:0 0 20px 0">
+				<div style="display:block;padding:5px 0">
+				<?php _e('Feed Title', 'medialibraryfeeder'); ?>
+				<input type="text" name="medialibraryfeeder_settings_titles_title_new" value="">
+				</div>
+				<div style="display:block;padding:5px 0">
+				<?php _e('Feed Description', 'medialibraryfeeder'); ?>
+				<textarea name="medialibraryfeeder_settings_titles_description_new" style="width: 100%;" value=""></textarea>
+				</div>
+				<div style="display:block;padding:5px 0">
+				<?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?>
+				<input type="text" name="medialibraryfeeder_settings_titles_rssmax_new" value="" size="3" />
+				</div>
+				<div style="display:block;padding:5px 0">
+				<?php _e('Icon Url', 'medialibraryfeeder'); ?>
+				<input type="text" name="medialibraryfeeder_settings_titles_iconurl_new" style="width: 100%;" value="" size="100"/>
+				</div>
+				<div style="clear:both"></div>
+			</div>
 
 			<p class="submit">
 			  <input type="submit" name="Submit" value="<?php _e('Save Changes') ?>" />
 			</p>
 
 			<h2><?php _e('Feed registered', 'medialibraryfeeder'); ?></h2>
-			<table class="wp-list-table widefat">
-			<tbody>
-			<tr>
-			<td><?php _e('Feed Title', 'medialibraryfeeder'); ?></td>
-			<td><?php _e('Feed Description', 'medialibraryfeeder'); ?></td>
-			<td><?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?></td>
-			<td><?php _e('Icon', 'medialibraryfeeder'); ?></td>
-			<td><?php _e('Delete'); ?></td>
-			<td><?php _e('Feed URL', 'medialibraryfeeder'); ?></td>
-			</tr>
+
 			<?php
 			$wp_uploads = wp_upload_dir();
 			$wp_upload_url = $wp_uploads['baseurl'];
 			foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
 				if( is_array($value1) ) {
-					?><tr><td>
-					<?php echo $key1; ?></td>
+					?>
+					<div style="padding:10px;border:#CCC 2px solid; margin:0 0 20px 0">
+					<div style="display:block;padding:5px 0">
+					<?php _e('Delete'); ?>
+					<input type="checkbox" name="medialibraryfeeder_settings_delete_title[]" value="<?php echo $key1; ?>">
+					</div>
+					<div style="display:block;padding:5px 0">
+					<?php _e('Feed Title', 'medialibraryfeeder'); ?>
+					<?php echo $key1; ?>
+					</div>
 					<?php
 					foreach ( $value1 as $key2 => $value2 ) {
 						if ( $key2 === 'iconurl' ) {
-							?><td><img src = "<?php echo $value2; ?>"></td>
+							?>
+							<div style="display:block;padding:5px 0">
+							<?php _e('Icon', 'medialibraryfeeder'); ?>
+							<img src = "<?php echo $value2; ?>" align="middle">
+							</div>
 							<?php
-						} elseif ( $key2 === 'description' || $key2 === 'rssmax' ){
-							?><td><?php echo $value2; ?></td>
+						} elseif ( $key2 === 'description' ){
+							?>
+							<div style="display:block;padding:5px 0">
+							<?php _e('Feed Description', 'medialibraryfeeder'); ?>
+							<?php echo $value2; ?>
+							</div>
+							<?php
+						} elseif ( $key2 === 'rssmax' ){
+							?>
+							<div style="display:block;padding:5px 0">
+							<?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?>
+							<?php echo $value2; ?>
+							</div>
 							<?php
 						}
 					}
-					?>
-					<td>
-					<input type="checkbox" name="medialibraryfeeder_settings_delete_title[]" value="<?php echo $key1; ?>">
-					</td>
-					<?php
 					$xmlurl = $wp_upload_url.'/'.md5($key1).'.xml';
 					?>
-					<td><input type="text" readonly="readonly" size=100 value="<?php echo $xmlurl; ?>"></td>
-					</tr>
+					<div style="display:block;padding:5px 0">
+					<?php _e('Icon Url', 'medialibraryfeeder'); ?>
+					<input type="text" readonly="readonly" style="width: 80%;" value="<?php echo $xmlurl; ?>">
+					</div>
+					<div style="clear:both"></div>
+					</div>
 				<?php
 				}
 			}
 			?>
-			</tbody>
-			</table>
 
 			<p class="submit">
 			  <input type="submit" name="Submit" value="<?php _e('Save Changes') ?>" />
@@ -282,7 +320,7 @@ class MediaLibraryFeederAdmin {
 		</div>
 	  </div>
 
-	  <div id="tabs-3">
+	  <div id="medialibraryfeeder-admin-tabs-3">
 		<div class="wrap">
 		<h2><?php _e('Advanced')._e('Settings'); ?></h2>
 
@@ -301,7 +339,7 @@ class MediaLibraryFeederAdmin {
 			}
 			?>
 
-			<form method="post" action="<?php echo $scriptname.'&#tabs-3'; ?>">
+			<form method="post" action="<?php echo $scriptname.'&#medialibraryfeeder-admin-tabs-3'; ?>">
 
 			<p><code>&lt;title&gt;</code><?php _e('Feed Title', 'medialibraryfeeder'); ?>:<select name="medialibraryfeeder_settings_select_title">
 			<?php
@@ -407,45 +445,63 @@ class MediaLibraryFeederAdmin {
 						if ( $select_title === $key1 ) {
 							switch ($key2) {
 								case 'description':
-									?><p><div><code>&lt;description&gt;</code><?php _e('Feed Description', 'medialibraryfeeder'); ?>:</div>
-									<textarea name="medialibraryfeeder_settings_titles_description" rows="2" cols="80"><?php echo $value2; ?></textarea></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<code>&lt;description&gt;</code><?php _e('Feed Description', 'medialibraryfeeder'); ?>
+									<textarea name="medialibraryfeeder_settings_titles_description" style="width: 100%;"><?php echo $value2; ?></textarea>
+									</div>
 									<?php
 									break;
 								case 'rssmax':
-									?><p><div><?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?>:<input type="text" name="medialibraryfeeder_settings_titles_rssmax" value="<?php echo $value2; ?>" size="3" /></div></p>
-
+									?>
+									<div style="display:block;padding:5px 0">
+									<?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?><input type="text" name="medialibraryfeeder_settings_titles_rssmax" value="<?php echo $value2; ?>" size="3" />
+									</div>
 									<?php
 									break;
 								case 'iconurl':
-									?><p><div><?php _e('Icon Url', 'medialibraryfeeder'); ?>:<input type="text" name="medialibraryfeeder_settings_titles_iconurl" value="<?php echo $value2; ?>" size="100"/></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<?php _e('Icon Url', 'medialibraryfeeder'); ?><input type="text" name="medialibraryfeeder_settings_titles_iconurl" value="<?php echo $value2; ?>" style="width: 100%;"/>
+									</div>
 									<?php
 									break;
 								case 'ttl':
-									?><p><div><code>&lt;ttl&gt;</code><?php _e('Stands for time to live. It is a number of minutes.', 'medialibraryfeeder'); ?>:<input type="text" name="medialibraryfeeder_settings_titles_ttl" value="<?php echo $value2; ?>" size="3" /></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<code>&lt;ttl&gt;</code><?php _e('Stands for time to live. It is a number of minutes.', 'medialibraryfeeder'); ?><input type="text" name="medialibraryfeeder_settings_titles_ttl" value="<?php echo $value2; ?>" size="3" /></div>
 									<?php
 									break;
 								case 'copyright':
-									?><p><div><code>&lt;copyright&gt;</code>Copyright:<input type="text" name="medialibraryfeeder_settings_titles_copyright" value="<?php echo $value2; ?>" /></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<code>&lt;copyright&gt;</code>Copyright<input type="text" name="medialibraryfeeder_settings_titles_copyright" value="<?php echo $value2; ?>" /></div>
 									<?php
 									break;
 								case 'itunes_author':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#authorId" target="_blank"><code>&lt;itunes:author&gt;</code></a>:<input type="text" name="medialibraryfeeder_settings_titles_itunes_author" value="<?php echo $value2; ?>" /></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#authorId" target="_blank"><code>&lt;itunes:author&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_author" value="<?php echo $value2; ?>" /></div>
 									<?php
 									break;
 								case 'itunes_block':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#block" target="_blank"><code>&lt;itunes:block&gt;</code></a>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#block" target="_blank"><code>&lt;itunes:block&gt;</code></a>
 									<select name="medialibraryfeeder_settings_titles_itunes_block">
 									<option value='no' <?php if($value2 === 'no'){echo 'selected';} ?>>no</option>
 									<option value='yes' <?php if($value2 === 'yes'){echo 'selected';} ?>>yes</option>
 									</select>
-									</div></p>
+									</div>
 									<?php
 									break;
 								case 'itunes_category_1':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#category" target="_blank"><code>&lt;itunes:category&gt;</code></a>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#category" target="_blank"><code>&lt;itunes:category&gt;</code></a>
 									<?php
 									?>
-									<select name="medialibraryfeeder_settings_titles_itunes_category_1">
+									<select style="width: 250px;" name="medialibraryfeeder_settings_titles_itunes_category_1">
 									<option value=''><?php echo __('Select').'1'; ?></option>
 									<?php
 									foreach ( $itunes_categories as $category_name => $category_tag ) {
@@ -459,7 +515,7 @@ class MediaLibraryFeederAdmin {
 									break;
 								case 'itunes_category_2':
 									?>
-									<select name="medialibraryfeeder_settings_titles_itunes_category_2">
+									<select style="width: 250px;" name="medialibraryfeeder_settings_titles_itunes_category_2">
 									<option value=''><?php echo __('Select').'2'; ?></option>
 									<?php
 									foreach ( $itunes_categories as $category_name => $category_tag ) {
@@ -473,7 +529,7 @@ class MediaLibraryFeederAdmin {
 									break;
 								case 'itunes_category_3':
 									?>
-									<select name="medialibraryfeeder_settings_titles_itunes_category_3">
+									<select style="width: 250px;" name="medialibraryfeeder_settings_titles_itunes_category_3">
 									<option value=''><?php echo __('Select').'3'; ?></option>
 									<?php
 									foreach ( $itunes_categories as $category_name => $category_tag ) {
@@ -482,53 +538,74 @@ class MediaLibraryFeederAdmin {
 										<?php
 									}
 									?>
-									</select></div>
-									</p>
+									</select>
+									</div>
 									<?php
 									break;
 								case 'itunes_image':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#image" target="_blank"><code>&lt;itunes:image&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_image" value="<?php echo $value2; ?>" size="100"/></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#image" target="_blank"><code>&lt;itunes:image&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_image" value="<?php echo $value2; ?>" style="width: 100%;"/>
+									</div>
 									<?php
 									break;
 								case 'itunes_explicit':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#explicit" target="_blank"><code>&lt;itunes:explicit&gt;</code></a>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#explicit" target="_blank"><code>&lt;itunes:explicit&gt;</code></a>
 									<select name="medialibraryfeeder_settings_titles_itunes_explicit">
 									<option value='no' <?php if($value2 === 'no'){echo 'selected';} ?>>no</option>
 									<option value='yes' <?php if($value2 === 'yes'){echo 'selected';} ?>>yes</option>
 									<option value='clean' <?php if($value2 === 'clean'){echo 'selected';} ?>>clean</option>
 									</select>
-									</div></p>
+									</div>
 									<?php
 									break;
 								case 'itunes_complete':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#complete" target="_blank"><code>&lt;itunes:complete&gt;</code></a>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#complete" target="_blank"><code>&lt;itunes:complete&gt;</code></a>
 									<select name="medialibraryfeeder_settings_titles_itunes_complete">
 									<option value='no' <?php if($value2 === 'no'){echo 'selected';} ?>>no</option>
 									<option value='yes' <?php if($value2 === 'yes'){echo 'selected';} ?>>yes</option>
 									</select>
-									</div></p>
+									</div>
 									<?php
 									break;
 								case 'itunes_newfeedurl':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#newfeed" target="_blank"><code>&lt;itunes:new-feed-url&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_newfeedurl" value="<?php echo $value2; ?>" size="100"/></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#newfeed" target="_blank"><code>&lt;itunes:new-feed-url&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_newfeedurl" value="<?php echo $value2; ?>" style="width: 100%;" />
+									</div>
 									<?php
 									break;
 								case 'itunes_name':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#owner" target="_blank"><code>&lt;itunes:name&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_name" value="<?php echo $value2; ?>" /></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#owner" target="_blank"><code>&lt;itunes:name&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_name" value="<?php echo $value2; ?>" />
+									</div>
 									<?php
 									break;
 								case 'itunes_email':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#owner" target="_blank"><code>&lt;itunes:email&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_email" value="<?php echo $value2; ?>" size="40"></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#owner" target="_blank"><code>&lt;itunes:email&gt;</code></a><input type="text" name="medialibraryfeeder_settings_titles_itunes_email" value="<?php echo $value2; ?>">
+									</div>
 									<?php
 									break;
 								case 'itunes_subtitle':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#subtitle" target="_blank"><code>&lt;itunes:subtitle&gt;</code></a>
-									<input type="text" name="medialibraryfeeder_settings_titles_itunes_subtitle" value="<?php echo $value2; ?>" size="40"></div></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#subtitle" target="_blank"><code>&lt;itunes:subtitle&gt;</code></a>
+									<input type="text" name="medialibraryfeeder_settings_titles_itunes_subtitle" value="<?php echo $value2; ?>"></div>
 									<?php
 									break;
 								case 'itunes_summary':
-									?><p><div><a href="http://www.apple.com/itunes/podcasts/specs.html#summary" target="_blank"><code>&lt;itunes:summary&gt;</code></a>:</div>
-									<textarea name="medialibraryfeeder_settings_titles_itunes_summary" rows="2" cols="80"><?php echo $value2; ?></textarea></p>
+									?>
+									<div style="display:block;padding:5px 0">
+									<a href="http://www.apple.com/itunes/podcasts/specs.html#summary" target="_blank"><code>&lt;itunes:summary&gt;</code></a>
+									<textarea name="medialibraryfeeder_settings_titles_itunes_summary" style="width: 100%;" ><?php echo $value2; ?></textarea>
+									</div>
 									<?php
 									break;
 							}
@@ -547,41 +624,42 @@ class MediaLibraryFeederAdmin {
 		</div>
 	  </div>
 
-	  <div id="tabs-4">
+	  <div id="medialibraryfeeder-admin-tabs-4">
 		<div class="wrap">
 			<h2><?php _e('Caution:') ?></h2>
 			<li><h3><?php _e('Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it. Choose a feed title. Input ituned option.', 'medialibraryfeeder'); ?></h3></li>
-			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/editmedia.png'; ?>">
+			<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/editmedia.png'; ?>">
 			<li><h3><?php _e('Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the title, put a check in the feed you want to use.', 'medialibraryfeeder'); ?></h3></li>
-			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/widget.png'; ?>">
+			<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/widget.png'; ?>">
 			<li><h3><?php _e('Icon can be used include the following.', 'medialibraryfeeder'); ?></h3></li>
-			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" size="100" /></div>
-			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" size="100" /></div>
+			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" style="width: 80%;" /></div>
+			<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" style="width: 80%;" /></div>
 		</div>
 	  </div>
 
-	  <div id="tabs-5">
+	  <div id="medialibraryfeeder-admin-tabs-5">
 		<div class="wrap">
 			<h2><?php _e('Shortcode',  'medialibraryfeeder'); ?></h2>
 			<li><h3><?php _e('MediaLibrary Feeder is available to display feed to [Post] or [Page] by shortcode. Use as follows.', 'medialibraryfeeder'); ?></h3></li>
-			<p>
-			<div style="text-indent:2em; font-weight:bold;">Optinos</div>
-			<div style="text-indent:4em"><code>[mlfeed feed=&#39;<font color="red">feed</font>&#39; link=&#39;<font color="red">file</font>&#39;]</code></div>
-			<li style="text-indent:4em; font-weight:bold;">feed</li>
-			<div style="text-indent:6em"><?php _e('Feed Title', 'medialibraryfeeder'); ?></div>
-			<li style="text-indent:4em; font-weight:bold;">link</li>
-			<div style="text-indent:6em"><?php _e('If specify the &quot;file&quot;, it is linked to each file. The initial value is a link to the permalink of the media.', 'medialibraryfeeder'); ?></div>
-			</p>
-			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag2.png'; ?>">
+			<div style="display:block;padding:5px 0">
+			<code>[mlfeed feed=&#39;<font color="red">feed</font>&#39; link=&#39;<font color="red">file</font>&#39;]</code>
+			</div>
+			<div style="display:block;padding:5px 0">
+			<div style="font-weight:bold;">Optinos</div>
+			<li>feed&nbsp&nbsp&nbsp<?php _e('Feed Title', 'medialibraryfeeder'); ?></li>
+			<li>link&nbsp&nbsp&nbsp<?php _e('If specify the &quot;file&quot;, it is linked to each file. The initial value is a link to the permalink of the media.', 'medialibraryfeeder'); ?></li>
+			</div>
+
+			<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag2.png'; ?>">
 			<li><h3><?php _e('Quick Tag of MediaLibrary Feeder will be added to ([Add New Post][Edit Post][Add New Page][Edit Page]). Please use it. Shortcode will be added.', 'medialibraryfeeder'); ?></h3></li>
-			<img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag1.png'; ?>">
+			<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag1.png'; ?>">
 			<li><h3><?php _e('In the case of an image, the feed can be cooperation with the following plugins.', 'medialibraryfeeder'); ?></h3></li>
 			<li style="text-indent:2em; font-weight:bold;"><a href="http://wordpress.org/plugins/boxers-and-swipers/" target="_blank">Boxers and Swipers</a></li>
 		</div>
 	  </div>
 
 	<!--
-	  <div id="tabs-6">
+	  <div id="medialibraryfeeder-admin-tabs-6">
 		<div class="wrap">
 			<h2>FAQ</h2>
 
@@ -823,7 +901,10 @@ class MediaLibraryFeederAdmin {
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
 		$feedtitle = get_post_meta($post->ID, "medialibraryfeeder_title", true);
 
-		echo '<h3>MediaLibrary Feeder</h3>';
+		// Top
+	    $form_fields["medialibraryfeeder_top"]["label"] = "";
+	    $form_fields["medialibraryfeeder_top"]["input"] = "html";
+		$form_fields["medialibraryfeeder_top"]["html"] = "<hr><h3><span style='font-weight:bold'>MediaLibrary Feeder</span></h3>";
 
 	    // checkbox
 	    $apply = get_post_meta( $post->ID, 'medialibraryfeeder_apply', true );
@@ -876,7 +957,7 @@ class MediaLibraryFeederAdmin {
 		    $itunes_image = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_image', true );
 		    $form_fields["medialibraryfeeder_itunes_image"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#image" target="_blank"><code>&lt;itunes:image&gt;</code></a></div>';
 			$form_fields["medialibraryfeeder_itunes_image"]["input"] = "html";
-		    $form_fields["medialibraryfeeder_itunes_image"]["html"]  = "<input type='text' class='text' id='attachments-{$post->ID}-medialibraryfeeder_itunes_image' name='attachments[{$post->ID}][medialibraryfeeder_itunes_image]' value='$itunes_image' size='80' />\n";
+		    $form_fields["medialibraryfeeder_itunes_image"]["html"]  = "<input type='text' style='width: 100%;' id='attachments-{$post->ID}-medialibraryfeeder_itunes_image' name='attachments[{$post->ID}][medialibraryfeeder_itunes_image]' value='$itunes_image' />\n";
 
 			// select
 			$itunes_explicit = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_explicit', true );
@@ -906,14 +987,19 @@ class MediaLibraryFeederAdmin {
 		    $itunes_subtitle = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_subtitle', true );
 		    $form_fields["medialibraryfeeder_itunes_subtitle"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#subtitle" target="_blank"><code>&lt;itunes:subtitle&gt;</code></a></div>';
 			$form_fields["medialibraryfeeder_itunes_subtitle"]["input"] = "html";
-		    $form_fields["medialibraryfeeder_itunes_subtitle"]["html"]  = "<input type='text' class='text' id='attachments-{$post->ID}-medialibraryfeeder_itunes_subtitle' name='attachments[{$post->ID}][medialibraryfeeder_itunes_subtitle]' value='$itunes_subtitle' size='80' />\n";
+		    $form_fields["medialibraryfeeder_itunes_subtitle"]["html"]  = "<input type='text' style='width: 100%;' id='attachments-{$post->ID}-medialibraryfeeder_itunes_subtitle' name='attachments[{$post->ID}][medialibraryfeeder_itunes_subtitle]' value='$itunes_subtitle' size='80' />\n";
 
 			// textarea
 			$itunes_summary = get_post_meta( $post->ID, 'medialibraryfeeder_itunes_summary', true );
 			$form_fields["medialibraryfeeder_itunes_summary"]["label"] = '<div align="left"><a href="http://www.apple.com/itunes/podcasts/specs.html#summary" target="_blank"><code>&lt;itunes:summary&gt;</code></a></div>';
 			$form_fields["medialibraryfeeder_itunes_summary"]["input"] = "html";
-			$form_fields["medialibraryfeeder_itunes_summary"]["html"] = "<textarea id='attachments-{$post->ID}-medialibraryfeeder_itunes_summary' name='attachments[{$post->ID}][medialibraryfeeder_itunes_summary]' rows='4' cols='80'>$itunes_summary</textarea>\n";
+			$form_fields["medialibraryfeeder_itunes_summary"]["html"] = "<textarea id='attachments-{$post->ID}-medialibraryfeeder_itunes_summary' name='attachments[{$post->ID}][medialibraryfeeder_itunes_summary]' style='width: 100%;'>$itunes_summary</textarea>\n";
 		}
+
+		// End
+	    $form_fields["medialibraryfeeder_end"]["label"] = "";
+	    $form_fields["medialibraryfeeder_end"]["input"] = "html";
+		$form_fields["medialibraryfeeder_end"]["html"] = "<hr>";
 
 	    return $form_fields;
 
@@ -981,6 +1067,38 @@ class MediaLibraryFeederAdmin {
 				_e('None');
 			}
 	    }
+	}
+
+	/* ==================================================
+	 * Add js css
+	 * @since	2.9
+	 */
+	function add_jscss(){
+
+// JS
+$medialibraryfeeder_add_jscss = <<<MEDIALIBRARYFEEDER
+
+<!-- BEGIN: MediaLibrary Feeder -->
+<script type="text/javascript">
+	jQuery(document).ready(function () {
+		jQuery('#medialibraryfeeder-admin-tabs').responsiveTabs({
+			startCollapsed: 'accordion'
+		});
+	});
+</script>
+<script type="text/javascript">
+	jQuery(function(){
+		jQuery('.medialibraryfeeder-admin-checkAll').on('change', function() {
+			jQuery('.' + this.id).prop('checked', this.checked);
+		});
+	});
+</script>
+<!-- END: MediaLibrary Feeder -->
+
+MEDIALIBRARYFEEDER;
+
+		return $medialibraryfeeder_add_jscss;
+
 	}
 
 }

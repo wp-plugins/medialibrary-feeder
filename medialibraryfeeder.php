@@ -2,7 +2,7 @@
 /*
 Plugin Name: MediaLibrary Feeder
 Plugin URI: http://wordpress.org/plugins/medialibrary-feeder/
-Version: 2.8
+Version: 2.9
 Description: Output as feed the media library. Generate a podcast for iTunes Store. It can be displayed to each feed using a shortcode.
 Author: Katsushi Kawamori
 Author URI: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
@@ -38,11 +38,13 @@ Domain Path: /languages
 	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederAdmin.php' );
 	$medialibraryfeederadmin = new MediaLibraryFeederAdmin();
 	add_action('admin_menu', array($medialibraryfeederadmin, 'plugin_menu'));
+	add_action( 'admin_enqueue_scripts', array($medialibraryfeederadmin, 'load_custom_wp_admin_style') );
 	add_filter('attachment_fields_to_edit', array($medialibraryfeederadmin, 'add_attachment_medialibraryfeeder_field'), 10, 2 );
 	add_filter('attachment_fields_to_save', array($medialibraryfeederadmin, 'attachment_field_medialibraryfeeder_save'), 10, 2 );
 	add_filter('plugin_action_links', array($medialibraryfeederadmin, 'settings_link'), 10, 2 );
 	add_filter('manage_media_columns', array($medialibraryfeederadmin, 'media_columns_medialibraryfeeder'));
 	add_action('manage_media_custom_column', array($medialibraryfeederadmin, 'media_custom_columns_medialibraryfeeder'), 10, 2);
+	add_action( 'admin_footer', array($medialibraryfeederadmin, 'load_custom_wp_admin_style2') );
 	unset($medialibraryfeederadmin);
 
 	include_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/inc/MediaLibraryFeeder.php' );
