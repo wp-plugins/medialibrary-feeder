@@ -3,8 +3,8 @@ Contributors: Katsushi Kawamori
 Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 2.9
+Tested up to: 4.0.1
+Stable tag: 2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ none
 9. Appearance of the short code
 
 == Changelog ==
+
+= 2.10 =
+Fixed a problem of Java Script for admin screen.
 
 = 2.9 =
 Change management screen to responsive tab menu design.
@@ -89,6 +92,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.10 =
 = 2.9 =
 = 2.8 =
 = 2.7 =

@@ -1080,11 +1080,9 @@ $medialibraryfeeder_add_jscss = <<<MEDIALIBRARYFEEDER
 
 <!-- BEGIN: MediaLibrary Feeder -->
 <script type="text/javascript">
-	jQuery(document).ready(function () {
-		jQuery('#medialibraryfeeder-admin-tabs').responsiveTabs({
-			startCollapsed: 'accordion'
-		});
-	});
+jQuery('#medialibraryfeeder-admin-tabs').responsiveTabs({
+  startCollapsed: 'accordion'
+});
 </script>
 <script type="text/javascript">
 	jQuery(function(){
