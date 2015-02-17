@@ -1,10 +1,10 @@
 === MediaLibrary Feeder ===
 Contributors: Katsushi Kawamori
-Donate link: http://gallerylink.nyanko.org/medialink/medialibrary-feeder/
+Donate link: http://pledgie.com/campaigns/28307
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.0.1
-Tested up to: 4.0.1
-Stable tag: 2.10
+Tested up to: 4.1
+Stable tag: 2.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ Output as feed the media library. Generate a podcast for iTunes Store. It can be
 
 *   Display to [Page] or [Post] from feed. Can be cooperation with [Boxers and Swipers](http://wordpress.org/plugins/boxers-and-swipers/).
 
-*   Japanese (ja) - [Katsushi Kawamori](http://gallerylink.nyanko.org/medialink/medialibrary-feeder/)
+*   Japanese (ja) - [Katsushi Kawamori](http://riverforest-wp.info/)
 
 == Installation ==
 
@@ -46,6 +46,12 @@ none
 9. Appearance of the short code
 
 == Changelog ==
+
+= 2.11 =
+Add screen of donate.
+Change the display of the message.
+Change readme.txt.
+Change /languages.
 
 = 2.10 =
 Fixed a problem of Java Script for admin screen.
@@ -92,6 +98,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 2.11 =
 = 2.10 =
 = 2.9 =
 = 2.8 =

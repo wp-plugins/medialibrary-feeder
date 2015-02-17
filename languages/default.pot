@@ -11,6 +11,9 @@ msgstr ""
 "X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+msgid "Output as feed the media library. Generate a podcast for iTunes Store. It can be displayed to each feed using a shortcode."
+msgstr ""
+
 msgid "Number of files to show to this page"
 msgstr ""
 
@@ -285,4 +288,7 @@ msgid "Technology - Software How-To"
 msgstr ""
 
 msgid "TV & Film"
+msgstr ""
+
+msgid "I need a donation. This is because, I want to continue the development and support of plugins."
 msgstr ""

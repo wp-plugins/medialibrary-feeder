@@ -95,9 +95,10 @@ class MediaLibraryFeederAdmin {
 	    <li><a href="#medialibraryfeeder-admin-tabs-3"><?php _e('Advanced')._e('Settings'); ?></a></li>
 	    <li><a href="#medialibraryfeeder-admin-tabs-4"><?php _e('Caution:'); ?></a></li>
 		<li><a href="#medialibraryfeeder-admin-tabs-5"><?php _e('Shortcode',  'medialibraryfeeder'); ?></a></li>
+		<li><a href="#medialibraryfeeder-admin-tabs-6"><?php _e('Donate to this plugin &#187;'); ?></a></li>
 
 	<!--
-		<li><a href="#medialibraryfeeder-admin-tabs-6">FAQ</a></li>
+		<li><a href="#medialibraryfeeder-admin-tabs-7">FAQ</a></li>
 	 -->
 	  </ul>
 
@@ -658,8 +659,17 @@ class MediaLibraryFeederAdmin {
 		</div>
 	  </div>
 
+		<div id="medialibraryfeeder-admin-tabs-6">
+		<div class="wrap">
+			<h3><?php _e('I need a donation. This is because, I want to continue the development and support of plugins.', 'medialibraryfeeder'); ?></h3>
+			<div align="right">Katsushi Kawamori</div>
+			<h3 style="float: left;"><?php _e('Donate to this plugin &#187;'); ?></h3>
+<a href='https://pledgie.com/campaigns/28307' target="_blank"><img alt='Click here to lend your support to: Various Plugins for WordPress and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/28307.png?skin_name=chrome' border='0' ></a>
+		</div>
+		</div>
+
 	<!--
-	  <div id="medialibraryfeeder-admin-tabs-6">
+	  <div id="medialibraryfeeder-admin-tabs-7">
 		<div class="wrap">
 			<h2>FAQ</h2>
 
@@ -822,6 +832,7 @@ class MediaLibraryFeederAdmin {
 		}
 
 		update_option( 'medialibraryfeeder_settings', $settings_tbl );
+		echo '<div class="updated"><ul><li>'.__('Settings').' --> '.__('Settings saved.').'</li></ul></div>';
 
 	}
 
