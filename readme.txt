@@ -2,9 +2,9 @@
 Contributors: Katsushi Kawamori
 Donate link: http://pledgie.com/campaigns/28307
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
-Requires at least: 3.0.1
-Tested up to: 4.1
-Stable tag: 2.11
+Requires at least: 3.6.0
+Tested up to: 4.2
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ none
 9. Appearance of the short code
 
 == Changelog ==
+
+= 3.0 =
+Separate menu pages. 
+Fixed problem of [Fatal error: Call to undefined function wp_get_current_user()].
+Change /languages.
 
 = 2.11 =
 Add screen of donate.
@@ -98,6 +103,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 3.0 =
 = 2.11 =
 = 2.10 =
 = 2.9 =

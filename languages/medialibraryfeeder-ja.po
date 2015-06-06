@@ -20,9 +20,6 @@ msgstr ""
 "ストを生成します。ショートコードを使用して、各フィードを表示することができま"
 "す。"
 
-msgid "Number of files to show to this page"
-msgstr "このページへ表示するファイルの数"
-
 msgid "Number of feeds of the latest to publish"
 msgstr "公開する最新のフィードの数"
 
@@ -309,7 +306,40 @@ msgid "TV & Film"
 msgstr "テレビ番組／映画"
 
 msgid ""
-"I need a donation. This is because, I want to continue the development and "
-"support of plugins."
+"Please make a donation if you like my work or would like to further the "
+"development of this plugin."
 msgstr ""
 "私はプラグインの開発とサポートを継続させるために寄付を必要としています。"
+
+msgid "Reviews"
+msgstr "レビュー"
+
+msgid "Register the media to feeds"
+msgstr "フィードにメディアを登録"
+
+msgid "Other Notes"
+msgstr "その他"
+
+msgid "Feed"
+msgstr "フィード"
+
+msgid "Update Feeds"
+msgstr "フィードを更新"
+
+msgid "Feeds was updated."
+msgstr "フィードが更新されました。"
+
+msgid "Feeds was registered."
+msgstr "フィードが登録されました。"
+
+msgid "Feeds was deleted."
+msgstr "フィードが削除されました。"
+
+msgid "Delete Feeds"
+msgstr "フィードを削除"
+
+msgid "Feeds Management"
+msgstr "フィード管理"
+
+msgid "Input is not enough."
+msgstr "入力が足りません。"

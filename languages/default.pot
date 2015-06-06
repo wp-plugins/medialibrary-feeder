@@ -14,9 +14,6 @@ msgstr ""
 msgid "Output as feed the media library. Generate a podcast for iTunes Store. It can be displayed to each feed using a shortcode."
 msgstr ""
 
-msgid "Number of files to show to this page"
-msgstr ""
-
 msgid "Number of feeds of the latest to publish"
 msgstr ""
 
@@ -290,5 +287,38 @@ msgstr ""
 msgid "TV & Film"
 msgstr ""
 
-msgid "I need a donation. This is because, I want to continue the development and support of plugins."
+msgid "Please make a donation if you like my work or would like to further the development of this plugin."
+msgstr ""
+
+msgid "Reviews"
+msgstr ""
+
+msgid "Register the media to feeds"
+msgstr ""
+
+msgid "Other Notes"
+msgstr ""
+
+msgid "Feed"
+msgstr ""
+
+msgid "Update Feeds"
+msgstr ""
+
+msgid "Feeds was updated."
+msgstr ""
+
+msgid "Feeds was registered."
+msgstr ""
+
+msgid "Feeds was deleted."
+msgstr ""
+
+msgid "Delete Feeds"
+msgstr ""
+
+msgid "Feeds Management"
+msgstr ""
+
+msgid "Input is not enough."
 msgstr ""

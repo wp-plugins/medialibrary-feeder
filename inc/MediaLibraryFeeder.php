@@ -42,14 +42,13 @@ class MediaLibraryFeeder {
 	 */
 	function scan_media(){
 
-		$args = array(
-			'post_type' => 'attachment',
-			'numberposts' => -1,
-			'orderby' => 'date',
-			'order' => 'DESC'
-			); 
-
-		$attachments = get_posts($args);
+		global $wpdb;
+		$attachments = $wpdb->get_results("
+						SELECT	ID, post_title, guid, post_date, post_content
+						FROM	$wpdb->posts
+						WHERE	post_type = 'attachment'
+								ORDER BY post_date DESC
+						");
 
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
 
@@ -146,17 +145,13 @@ class MediaLibraryFeeder {
 
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
 
-		$wp_uploads = wp_upload_dir();
-		$wp_upload_path = $wp_uploads['basedir'];
-		$wp_upload_url = $wp_uploads['baseurl'];
-
 		foreach ( $xmlitems as $feedtitle => $xmlitem ) {
-			$xmlfile = $wp_upload_path.'/'.md5($feedtitle).'.xml';
+			$xmlfile = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_DIR.'/'.md5($feedtitle).'.xml';
 			$xml_begin = NULL;
 			$xml_end = NULL;
 
 			$homeurl = home_url();
-			$feedlanguage = WPLANG;
+			$feedlanguage = get_option('WPLANG');
 			$stamptime = mysql2date( DATE_RSS, time() );
 			$itunescategory = stripslashes($medialibraryfeeder_settings[$feedtitle]['itunes_category_1']);
 			$itunescategory .= stripslashes($medialibraryfeeder_settings[$feedtitle]['itunes_category_2']);
@@ -213,14 +208,14 @@ XMLEND;
 					fclose($fno);
 				}
 			}else{
-				if (is_writable($wp_upload_path)) {
+				if (is_writable(MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_DIR)) {
 					$fno = fopen($xmlfile, 'w');
 						fwrite($fno, $xml);
 					fclose($fno);
 					chmod($xmlfile, 0646);
 				} else {
 					_e('Could not create an RSS Feed. Please change to 777 or 757 to permissions of following directory.', 'medialibraryfeeder');
-					echo '<div>'.$wp_upload_url.'</div>';
+					echo '<div>'.MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL.'</div>';
 				}
 			}
 		}
@@ -235,15 +230,11 @@ XMLEND;
 	 */
 	function feed_link( $xmlitems ){
 
-		$wp_uploads = wp_upload_dir();
-		$wp_upload_path = $wp_uploads['basedir'];
-		$wp_upload_url = $wp_uploads['baseurl'];
-
 		$feedlink = '<!-- Start MediaLibrary Feeder -->'."\n";
 		$feedwidget_tbl = array();
 		foreach ( $xmlitems as $feedtitle => $xmlitem ) {
-			$xmlfile = $wp_upload_path.'/'.md5($feedtitle).'.xml';
-			$xmlurl = $wp_upload_url.'/'.md5($feedtitle).'.xml';
+			$xmlfile = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_DIR.'/'.md5($feedtitle).'.xml';
+			$xmlurl = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL.'/'.md5($feedtitle).'.xml';
 			if ( file_exists($xmlfile)){
 				$feedlink .= '<link rel="alternate" type="application/rss+xml" href="'.$xmlurl.'" title="'.$feedtitle.'" />'."\n";
 				$feedwidget_tbl[$feedtitle] = $xmlurl;
@@ -304,14 +295,13 @@ XMLEND;
 		$permalink = TRUE;
 		if ( $link === 'file' ) { $permalink = FALSE; }
 
-		$args = array(
-			'post_type' => 'attachment',
-			'numberposts' => -1,
-			'orderby' => 'date',
-			'order' => 'DESC'
-			); 
-
-		$attachments = get_posts($args);
+		global $wpdb;
+		$attachments = $wpdb->get_results("
+						SELECT	ID, post_title, guid, post_date
+						FROM	$wpdb->posts
+						WHERE	post_type = 'attachment'
+								ORDER BY post_date DESC
+						");
 
 		$medialibraryfeeder_settings = get_option('medialibraryfeeder_settings');
 
@@ -389,12 +379,10 @@ XMLEND;
 		$html .= '</div>';
 
 		if ( isset($feedicontitle) ) {
-			$wp_uploads = wp_upload_dir();
-			$wp_upload_url = $wp_uploads['baseurl'];
 			foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
 				if( is_array($value1) ) {
 					if ( $key1 ===  $feedicontitle ){
-						$xmlurl = $wp_upload_url.'/'.md5($key1).'.xml';
+						$xmlurl = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL.'/'.md5($key1).'.xml';
 					}
 				}
 			}
@@ -403,6 +391,76 @@ XMLEND;
 		}
 
 		return $html;
+
+	}
+
+	/* ==================================================
+	 * @param	string	$ext
+	 * @param	int		$attach_id
+	 * @param	array	$metadata
+	 * @return	array	$imagethumburls(array), $mimetype(string), $length(string), $thumbnail_img_url(string), $stamptime(string), $file_size(string)
+	 * @since	3.0
+	 */
+	function getmeta($ext, $attach_id, $metadata){
+
+		$imagethumburls = array();
+		$mimetype = NULL;
+		$length = NULL;
+
+		if(empty($metadata)){
+			// for wp_read_audio_metadata and wp_read_video_metadata
+			include_once( ABSPATH . 'wp-admin/includes/media.php' );
+		}
+
+		if ( wp_ext2type($ext) === 'image' ){
+			if(empty($metadata)){
+				$metadata = wp_get_attachment_metadata( $attach_id );
+			}
+			$imagethumburl_base = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL.'/'.rtrim($metadata['file'], wp_basename($metadata['file']));
+			foreach ( $metadata as $key1 => $key2 ){
+				if ( $key1 === 'sizes' ) {
+					foreach ( $metadata[$key1] as $key2 => $key3 ){
+						$imagethumburls[$key2] = $imagethumburl_base.$metadata['sizes'][$key2]['file'];
+					}
+				}
+			}
+		}else if ( wp_ext2type($ext) === 'video' ){
+			if(empty($metadata)){
+				$metadata = wp_read_video_metadata( get_attached_file($attach_id) );
+			}
+			if(array_key_exists ('fileformat', $metadata)){
+				$mimetype = $metadata['fileformat'].'('.$metadata['mime_type'].')';
+			}
+			if(array_key_exists ('length_formatted', $metadata)){
+				$length = $metadata['length_formatted'];
+			}
+		}else if ( wp_ext2type($ext) === 'audio' ){
+			if(empty($metadata)){
+				$metadata = wp_read_audio_metadata( get_attached_file($attach_id) );
+			}
+			if(array_key_exists ('fileformat', $metadata)){
+				$mimetype = $metadata['fileformat'].'('.$metadata['mime_type'].')';
+			}
+			if(array_key_exists ('length_formatted', $metadata)){
+				$length = $metadata['length_formatted'];
+			}
+		} else {
+			$metadata = NULL;
+			$filetype = wp_check_filetype( get_attached_file($attach_id) );
+			$mimetype =  $filetype['ext'].'('.$filetype['type'].')';
+		}
+
+		$image_attr_thumbnail = wp_get_attachment_image_src($attach_id, 'thumbnail', true);
+		$thumbnail_img_url = $image_attr_thumbnail[0];
+
+		$stamptime = get_the_time( 'Y-n-j ', $attach_id ).get_the_time( 'G:i', $attach_id );
+		if ( isset( $metadata['filesize'] ) ) {
+			$file_size = $metadata['filesize'];
+		} else {
+			$file_size = @filesize( get_attached_file($attach_id) );
+		}
+
+		return array($imagethumburls, $mimetype, $length, $thumbnail_img_url, $stamptime, $file_size);
 
 	}
 

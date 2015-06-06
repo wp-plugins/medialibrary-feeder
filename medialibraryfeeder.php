@@ -2,7 +2,7 @@
 /*
 Plugin Name: MediaLibrary Feeder
 Plugin URI: http://wordpress.org/plugins/medialibrary-feeder/
-Version: 2.11
+Version: 3.0
 Description: Output as feed the media library. Generate a podcast for iTunes Store. It can be displayed to each feed using a shortcode.
 Author: Katsushi Kawamori
 Author URI: http://riverforest-wp.info/
@@ -30,6 +30,13 @@ Domain Path: /languages
 	define("MEDIALIBRARYFEEDER_PLUGIN_BASE_FILE", plugin_basename(__FILE__));
 	define("MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR", dirname(__FILE__));
 	define("MEDIALIBRARYFEEDER_PLUGIN_URL", plugins_url($path='',$scheme=null).'/medialibrary-feeder');
+	$wp_uploads = wp_upload_dir();
+	if(is_ssl()){
+		define("MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL", str_replace('http:', 'https:', $wp_uploads['baseurl']));
+	} else {
+		define("MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL", $wp_uploads['baseurl']);
+	}
+	define("MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_DIR", $wp_uploads['basedir']);
 
 	require_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/req/MediaLibraryFeederRegist.php' );
 	$medialibraryfeederregist = new MediaLibraryFeederRegist();
@@ -50,7 +57,6 @@ Domain Path: /languages
 
 	include_once( MEDIALIBRARYFEEDER_PLUGIN_BASE_DIR.'/inc/MediaLibraryFeeder.php' );
 	$medialibraryfeeder = new MediaLibraryFeeder();
-	$medialibraryfeeder->generate_feed();
 	add_action( 'wp_head',  array($medialibraryfeeder, 'add_feedlink') );
 	add_shortcode( 'mlfeed', array($medialibraryfeeder, 'feed_shortcode_func') );
 	unset($medialibraryfeeder);
