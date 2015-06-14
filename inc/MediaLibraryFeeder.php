@@ -312,45 +312,35 @@ XMLEND;
 
 		if ($attachments) {
 			$pagecount = 0;
-			$page_feed = 0;
-			$page = 1;
 			foreach ( $attachments as $attachment ) {
 			    $feedtitle = get_post_meta( $attachment->ID, 'medialibraryfeeder_title', true);
 				if ( !empty($feedtitle) ) {
-					if ( !empty($_GET[$feedtitle.'-p']) && $feed === $feedtitle ) {
-						$page = $_GET[$feedtitle.'-p'];
-					}
 					$pagemax = $medialibraryfeeder_settings[$feedtitle]['rssmax'];
-					$page_begin = $pagemax * ( $page - 1 ) ;
-					$page_end = $pagemax * $page ;
-					if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $feed === $feedtitle ) {
-						if ( $page_end > $pagecount && $page_begin <= $pagecount ) {
-							$title = $attachment->post_title;
-							$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
-							$exts = explode('.', $attachment->guid);
-							$ext = end($exts);
-							$ext2type = wp_ext2type($ext);
-							$thumblink = NULL;
-							$link_url = NULL;
-							$file_size = NULL;
-							$length = NULL;
-							$stamptime = $attachment->post_date;
-							$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
-							if ( isset( $attachment_metadata['filesize'] ) ) {
-								$file_size = $attachment_metadata['filesize'];
-							} else {
-								$file_size = filesize( get_attached_file($attachment->ID) );
-							}
-							$metadata = '<div>'.$stamptime.'&nbsp;&nbsp;'.size_format($file_size);
-							if ( $ext2type === 'audio' || $ext2type === 'video' ) {
-								$length = $attachment_metadata['length_formatted'];
-								$metadata .= '&nbsp;&nbsp;'.$length;
-							}
-							$metadata .= '</div>';
-							$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
-							$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', $permalink, FALSE , $thumblink.$title.$metadata ).'</li>';
-							$page_encode = urlencode($feedtitle.'-p');
+					if (get_post_meta( $attachment->ID, 'medialibraryfeeder_apply', true ) && $feed === $feedtitle  && $pagemax > $pagecount ) {
+						$title = $attachment->post_title;
+						$stamptime = mysql2date( DATE_RSS, $attachment->post_date );
+						$exts = explode('.', $attachment->guid);
+						$ext = end($exts);
+						$ext2type = wp_ext2type($ext);
+						$thumblink = NULL;
+						$link_url = NULL;
+						$file_size = NULL;
+						$length = NULL;
+						$stamptime = $attachment->post_date;
+						$attachment_metadata = get_post_meta($attachment->ID, '_wp_attachment_metadata', true);
+						if ( isset( $attachment_metadata['filesize'] ) ) {
+							$file_size = $attachment_metadata['filesize'];
+						} else {
+							$file_size = filesize( get_attached_file($attachment->ID) );
 						}
+						$metadata = '<div>'.$stamptime.'&nbsp;&nbsp;'.size_format($file_size);
+						if ( $ext2type === 'audio' || $ext2type === 'video' ) {
+							$length = $attachment_metadata['length_formatted'];
+							$metadata .= '&nbsp;&nbsp;'.$length;
+						}
+						$metadata .= '</div>';
+						$thumblink = wp_get_attachment_image( $attachment->ID, 'thumbnail', TRUE );
+						$html .= '<li>'.wp_get_attachment_link( $attachment->ID, 'thumbnail', $permalink, FALSE, $thumblink.'<div style="overflow: hidden;">'.$title.$metadata.'</div>' ).'</li>'."\n";
 						++$pagecount;
 						$page_feed = ceil( $pagecount / $pagemax );
 						$feedicontitle = $feedtitle;
@@ -359,24 +349,6 @@ XMLEND;
 			}
 		}
 		$html .= '</div><br clear="all">';
-
-		$html .= '<div id="pagenation-medialibraryfeeder">';
-		$permalink_url = get_permalink( get_the_ID() );
-		if ( !empty($page_encode) ) {
-			$permalink_url_next = add_query_arg( $page_encode, $page+1, $permalink_url );
-			$permalink_url_prev = add_query_arg( $page_encode, $page-1, $permalink_url );
-			$permalink_url_begin = add_query_arg( $page_encode, 1, $permalink_url );
-			$permalink_url_end = add_query_arg( $page_encode, $page_feed, $permalink_url );
-		}
-		if ( $page == 1 && $page_feed > 1 ) {
-			$html .= '<li>'.__('Pages:').$page.'&#47;'.$page_feed.'&nbsp;&nbsp;<a href="'.$permalink_url_next.'">&nbsp;&nbsp;&nbsp;&#62;&nbsp;&nbsp;&nbsp;</a><a href="'.$permalink_url_end.'">&nbsp;&nbsp;&nbsp;&#62;&#62;&nbsp;&nbsp;&nbsp;</a></li>';
-		} else if ( $page > 1 && $pagecount % $page_end > 0 && $pagecount > $page_end ) {
-			$html .= '<li><a href="'.$permalink_url_begin.'">&nbsp;&nbsp;&nbsp;&#60;&#60;&nbsp;&nbsp;&nbsp;</a><a href="'.$permalink_url_prev.'">&nbsp;&nbsp;&nbsp;&#60;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;'.__('Pages:').$page.'&#47;'.$page_feed;
-			$html .= '&nbsp;&nbsp;<a href="'.$permalink_url_next.'">&nbsp;&nbsp;&nbsp;&#62;&nbsp;&nbsp;&nbsp;</a><a href="'.$permalink_url_end.'">&nbsp;&nbsp;&nbsp;&#62;&#62;&nbsp;&nbsp;&nbsp;</a></li>';
-		} else if ( $page > 1 && $pagecount > $page_begin && $pagecount <= $page_end ) {
-			$html .= '<li><a href="'.$permalink_url_begin.'">&nbsp;&nbsp;&nbsp;&#60;&#60;&nbsp;&nbsp;&nbsp;</a><a href="'.$permalink_url_prev.'">&nbsp;&nbsp;&nbsp;&#60;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;'.__('Pages:').$page.'&#47;'.$page_feed.'</li>';
-		}
-		$html .= '</div>';
 
 		if ( isset($feedicontitle) ) {
 			foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {

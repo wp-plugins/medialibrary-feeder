@@ -215,7 +215,15 @@ class MediaLibraryFeederAdmin {
 				<span style="margin-right: 1em;"></span>
 				<input type="radio" name="medialibraryfeeder_settings_titles_iconurl_new" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>"><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" align="middle">
 				<span style="margin-right: 1em;"></span>
+				<input type="radio" name="medialibraryfeeder_settings_titles_iconurl_new" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-20x20.png'; ?>"><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-20x20.png'; ?>" align="middle">
+				<span style="margin-right: 1em;"></span>
+				<input type="radio" name="medialibraryfeeder_settings_titles_iconurl_new" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-80x80.png'; ?>"><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-80x80.png'; ?>" align="middle">
+				<span style="margin-right: 1em;"></span>
 				<input type="radio" name="medialibraryfeeder_settings_titles_iconurl_new" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" checked><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" align="middle">
+				<span style="margin-right: 1em;"></span>
+				<input type="radio" name="medialibraryfeeder_settings_titles_iconurl_new" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-20x20.png'; ?>"><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-20x20.png'; ?>" align="middle">
+				<span style="margin-right: 1em;"></span>
+				<input type="radio" name="medialibraryfeeder_settings_titles_iconurl_new" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-80x80.png'; ?>"><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-80x80.png'; ?>" align="middle">
 				</div>
 				<div style="padding-top: 5px; padding-bottom: 5px;">
 				  <input type="submit" class="button-primary button-large" name="FeedRegist" value="<?php _e('Registration of feed', 'medialibraryfeeder') ?>" />
@@ -225,59 +233,52 @@ class MediaLibraryFeederAdmin {
 
 			<h2><?php _e('Feed registered', 'medialibraryfeeder'); ?></h2>
 
+			<div style="padding:10px;border:#CCC 2px solid; margin:0 0 20px 0">
+			<div style="border-bottom: 1px solid; padding-top: 5px; padding-bottom: 5px;">
+			<?php echo __('Delete').__('Select'); ?> & <?php _e('Icon', 'medialibraryfeeder'); ?> & <?php _e('Feed', 'medialibraryfeeder'); ?>
+			</div>
 			<?php
 			foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
 				if( is_array($value1) ) {
+					$title_html = NULL;
+					$icon_html = NULL;
+					$description_html = NULL;
+					$rssmax_html = NULL;
+					$xml_html = NULL;
 					?>
-					<div style="padding:10px;border:#CCC 2px solid; margin:0 0 20px 0">
-					<div style="display:block;padding:5px 0">
-					<?php _e('Delete'); ?>
-					<input type="checkbox" name="medialibraryfeeder_settings_delete_title[]" value="<?php echo $key1; ?>">
-					</div>
-					<div style="display:block;padding:5px 0">
-					<?php _e('Feed Title', 'medialibraryfeeder'); ?>
-					<?php echo $key1; ?>
-					</div>
+					<input type="checkbox" name="medialibraryfeeder_settings_delete_title[]" value="<?php echo $key1; ?>" style="float: left; margin: 5px;">
 					<?php
+					$title_html = __('Feed Title', 'medialibraryfeeder').': '.$key1;
 					foreach ( $value1 as $key2 => $value2 ) {
 						if ( $key2 === 'iconurl' ) {
-							?>
-							<div style="display:block;padding:5px 0">
-							<?php _e('Icon', 'medialibraryfeeder'); ?>
-							<img src = "<?php echo $value2; ?>" align="middle">
-							</div>
-							<?php
+							$icon_html = '<img src = "'.$value2.'" style="float: left; margin: 5px;">';
 						} elseif ( $key2 === 'description' ){
-							?>
-							<div style="display:block;padding:5px 0">
-							<?php _e('Feed Description', 'medialibraryfeeder'); ?>
-							<?php echo $value2; ?>
-							</div>
-							<?php
+							$description_html = '<div>'.__('Feed Description', 'medialibraryfeeder').': '.$value2.'</div>';
 						} elseif ( $key2 === 'rssmax' ){
-							?>
-							<div style="display:block;padding:5px 0">
-							<?php _e('Number of feeds of the latest to publish', 'medialibraryfeeder'); ?>
-							<?php echo $value2; ?>
-							</div>
-							<?php
+							$rssmax_html = '<div>'.__('Number of feeds of the latest to publish', 'medialibraryfeeder').': '.$value2.'</div>';
 						}
 					}
 					$xmlurl = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL.'/'.md5($key1).'.xml';
+					$xml_html = '<div>'.__('Feed URL', 'medialibraryfeeder').': <a href="'.$xmlurl.'" target="_blank">'.$xmlurl.'</a></div>';
+					echo $icon_html.'<div style="overflow: hidden;">'.$title_html.$description_html.$rssmax_html.$xml_html;
 					?>
-					<div style="display:block;padding:5px 0">
-					<?php _e('Feed URL', 'medialibraryfeeder'); ?>
-					<input type="text" readonly="readonly" style="width: 80%;" value="<?php echo $xmlurl; ?>">
+					<form method="post" action="<?php echo admin_url('admin.php?page=medialibraryfeeder-advanced-settings'); ?>">
+					<input type="hidden" name="medialibraryfeeder_settings_select_title" value="<?php echo $key1; ?>">
+					<input type="submit" class="button" name="FeedSelect" value="<?php echo __('Advanced').__('Settings'); ?>" />
+					</form>
 					</div>
-					<div style="clear:both"></div>
-					</div>
-				<?php
+					<div style="border-bottom: 1px solid; padding-top: 5px; padding-bottom: 5px;"></div>
+					<div style="clear: both;"></div>
+					<?php
 				}
 			}
 			?>
+			<?php echo __('Delete').__('Select'); ?> & <?php _e('Icon', 'medialibraryfeeder'); ?> & <?php _e('Feed', 'medialibraryfeeder'); ?>
 
-			<div style="padding-top: 5px; padding-bottom: 5px;">
+			<div style="padding-top: 10px; padding-bottom: 5px;">
 			  <input type="submit" class="button-primary button-large" name="FeedDelete" value="<?php _e('Delete Feeds', 'medialibraryfeeder') ?>" />
+			</div>
+
 			</div>
 
 			</form>
@@ -315,7 +316,7 @@ class MediaLibraryFeederAdmin {
 
 		?>
 		<div class="wrap">
-		<h2>MediaLibrary Feeder <?php _e('Advanced')._e('Settings'); ?>
+		<h2>MediaLibrary Feeder <?php echo __('Advanced').__('Settings'); ?>
 			<form method="post" style="float: right;" action="<?php echo admin_url('admin.php?page=medialibraryfeeder-other-notes'); ?>" />
 				<input type="submit" class="button" value="<?php _e('Other Notes', 'medialibraryfeeder'); ?>" />
 			</form>
@@ -881,37 +882,42 @@ class MediaLibraryFeederAdmin {
 		 -->
 		  </ul>
 
-		  <div id="medialibraryfeeder-admin-tabs-1">
+		  <div id="medialibraryfeeder-admin-tabs-1" style="background-color: #ffffff;">
 			<div class="wrap">
 				<h2><?php _e('Caution:') ?></h2>
 				<li><h3><?php _e('Meta-box of MediaLibrary Feeder will be added to [Edit Media]. Please do apply it. Choose a feed title. Input ituned option.', 'medialibraryfeeder'); ?></h3></li>
 				<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/editmedia.png'; ?>">
+				<hr>
 				<li><h3><?php _e('Widget of MediaLibrary Feeder will be added to [Widgets]. Please enter the title, put a check in the feed you want to use.', 'medialibraryfeeder'); ?></h3></li>
 				<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/widget.png'; ?>">
+				<hr>
 				<li><h3><?php _e('Icon can be used include the following.', 'medialibraryfeeder'); ?></h3></li>
 				<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds.png'; ?>" style="width: 80%;" /></div>
 				<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast.png'; ?>" style="width: 80%;" /></div>
+				<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-20x20.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-20x20.png'; ?>" style="width: 80%;" /></div>
+				<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-20x20.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-20x20.png'; ?>" style="width: 80%;" /></div>
+				<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-80x80.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/rssfeeds-80x80.png'; ?>" style="width: 80%;" /></div>
+				<div><img src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-80x80.png'; ?>" align="middle"><input type="text" readonly="readonly" value="<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/icon/podcast-80x80.png'; ?>" style="width: 80%;" /></div>
 			</div>
 		  </div>
 
-		  <div id="medialibraryfeeder-admin-tabs-2">
+		  <div id="medialibraryfeeder-admin-tabs-2" style="background-color: #ffffff;">
 			<div class="wrap">
 				<h2><?php _e('Shortcode',  'medialibraryfeeder'); ?></h2>
 				<li><h3><?php _e('MediaLibrary Feeder is available to display feed to [Post] or [Page] by shortcode. Use as follows.', 'medialibraryfeeder'); ?></h3></li>
-				<div style="display:block;padding:5px 0">
+				<div style="display:block; padding:5px 0">
 				<code>[mlfeed feed=&#39;<font color="red">feed</font>&#39; link=&#39;<font color="red">file</font>&#39;]</code>
 				</div>
-				<div style="display:block;padding:5px 0">
-				<div style="font-weight:bold;">Optinos</div>
-				<li>feed&nbsp&nbsp&nbsp<?php _e('Feed Title', 'medialibraryfeeder'); ?></li>
-				<li>link&nbsp&nbsp&nbsp<?php _e('If specify the &quot;file&quot;, it is linked to each file. The initial value is a link to the permalink of the media.', 'medialibraryfeeder'); ?></li>
-				</div>
-
+				<div style="display:block; padding:0px 25px; font-weight:bold;">Optinos</div>
+				<div style="display:block; padding:0px 45px;">feed&nbsp&nbsp&nbsp<?php _e('Feed Title', 'medialibraryfeeder'); ?></div>
+				<div style="display:block; padding:0px 45px 10px;">link&nbsp&nbsp&nbsp<?php _e('If specify the &quot;file&quot;, it is linked to each file. The initial value is a link to the permalink of the media.', 'medialibraryfeeder'); ?></div>
 				<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag2.png'; ?>">
+				<hr>
 				<li><h3><?php _e('Quick Tag of MediaLibrary Feeder will be added to ([Add New Post][Edit Post][Add New Page][Edit Page]). Please use it. Shortcode will be added.', 'medialibraryfeeder'); ?></h3></li>
 				<img style="width: 100%;" src = "<?php echo MEDIALIBRARYFEEDER_PLUGIN_URL.'/images/quicktag1.png'; ?>">
+				<hr>
 				<li><h3><?php _e('In the case of an image, the feed can be cooperation with the following plugins.', 'medialibraryfeeder'); ?></h3></li>
-				<li style="text-indent:2em; font-weight:bold;"><a href="http://wordpress.org/plugins/boxers-and-swipers/" target="_blank">Boxers and Swipers</a></li>
+				<div style="display:block; padding:0px 25px; font-weight:bold;"><a href="http://wordpress.org/plugins/boxers-and-swipers/" target="_blank">Boxers and Swipers</a></div>
 			</div>
 		  </div>
 

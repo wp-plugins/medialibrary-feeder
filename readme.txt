@@ -4,7 +4,7 @@ Donate link: http://pledgie.com/campaigns/28307
 Tags: audio, feed, gallery, image, iTunes, media, music, podcast, rss, video, xml
 Requires at least: 3.6.0
 Tested up to: 4.2
-Stable tag: 3.0
+Stable tag: 3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,15 +13,12 @@ Output as feed the media library. Generate a podcast for iTunes Store. It can be
 == Description ==
 
 *   Output as feed the media library.
-
 *   Outputs can be individually named.
-
 *   Feeds of the image adds thumbnail.
-
 *   Feeds of the audios and videos has been distributed as podcasts.
+*   Display to [Page] or [Post] from feed. Work with [Boxers and Swipers](http://wordpress.org/plugins/boxers-and-swipers/).
 
-*   Display to [Page] or [Post] from feed. Can be cooperation with [Boxers and Swipers](http://wordpress.org/plugins/boxers-and-swipers/).
-
+Translators
 *   Japanese (ja) - [Katsushi Kawamori](http://riverforest-wp.info/)
 
 == Installation ==
@@ -46,6 +43,11 @@ none
 9. Appearance of the short code
 
 == Changelog ==
+
+= 3.1 =
+Add feed icon.
+Fixed problem of shortcode option.
+Fixed problem of management screen.
 
 = 3.0 =
 Separate menu pages. 
@@ -103,6 +105,7 @@ Generate a podcast for iTunes Store.
 
 == Upgrade Notice ==
 
+= 3.1 =
 = 3.0 =
 = 2.11 =
 = 2.10 =
