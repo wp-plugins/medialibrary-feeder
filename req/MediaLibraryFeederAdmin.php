@@ -260,12 +260,9 @@ class MediaLibraryFeederAdmin {
 					}
 					$xmlurl = MEDIALIBRARYFEEDER_PLUGIN_UPLOAD_URL.'/'.md5($key1).'.xml';
 					$xml_html = '<div>'.__('Feed URL', 'medialibraryfeeder').': <a href="'.$xmlurl.'" target="_blank">'.$xmlurl.'</a></div>';
-					echo $icon_html.'<div style="overflow: hidden;">'.$title_html.$description_html.$rssmax_html.$xml_html;
+					echo $icon_html.'<div style="overflow: hidden;">'.$title_html.$description_html.$rssmax_html.$xml_html."\n";
 					?>
-					<form method="post" action="<?php echo admin_url('admin.php?page=medialibraryfeeder-advanced-settings'); ?>">
-					<input type="hidden" name="medialibraryfeeder_settings_select_title" value="<?php echo $key1; ?>">
-					<input type="submit" class="button" name="FeedSelect" value="<?php echo __('Advanced').__('Settings'); ?>" />
-					</form>
+					<input type="button" class="button" onclick="location.href='<?php echo admin_url('admin.php?page=medialibraryfeeder-advanced-settings&medialibraryfeeder_settings_select_title='.$key1); ?>'" value="<?php echo __('Advanced').__('Settings'); ?>">
 					</div>
 					<div style="border-bottom: 1px solid; padding-top: 5px; padding-bottom: 5px;"></div>
 					<div style="clear: both;"></div>
@@ -334,6 +331,7 @@ class MediaLibraryFeederAdmin {
 
 			<?php
 			if(isset($_POST['medialibraryfeeder_settings_select_title'])){ $select_title = $_POST['medialibraryfeeder_settings_select_title']; }
+			if(isset($_GET['medialibraryfeeder_settings_select_title'])){ $select_title = $_GET['medialibraryfeeder_settings_select_title']; }
 			if( empty($select_title) ) {
 				$key1count = 0; 
 				foreach ( $medialibraryfeeder_settings as $key1 => $value1 ) {
