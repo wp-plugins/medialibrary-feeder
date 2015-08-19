@@ -2,7 +2,7 @@
 /*
 Plugin Name: MediaLibrary Feeder
 Plugin URI: http://wordpress.org/plugins/medialibrary-feeder/
-Version: 3.2
+Version: 3.3
 Description: Output as feed the media library. Generate a podcast for iTunes Store. It can be displayed to each feed using a shortcode.
 Author: Katsushi Kawamori
 Author URI: http://riverforest-wp.info/

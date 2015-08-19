@@ -322,3 +322,6 @@ msgstr ""
 
 msgid "Input is not enough."
 msgstr ""
+
+msgid "Entries of RSS feed from MediaLibrary Feeder."
+msgstr ""

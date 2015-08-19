@@ -25,10 +25,12 @@
  */
 class MediaLibraryFeederWidgetItem extends WP_Widget {
 
-	function MediaLibraryFeederWidgetItem() {
-
-		parent::WP_Widget(false, $name = 'MediaLibraryFeederRssFeed');
-
+	function __construct() {
+		parent::__construct(
+			'MediaLibraryFeederWidgetItem', // Base ID
+			__( 'MediaLibraryFeederRssFeed' ), // Name
+			array( 'description' => __( 'Entries of RSS feed from MediaLibrary Feeder.', 'medialibraryfeeder'), ) // Args
+		);
 	}
 
 	function widget($args, $instance) {
